@@ -6,241 +6,100 @@
 <title>Viaje Aguas Verdes 2026</title>
 <style>
   :root {
-    --bg: #f0f4f8;
-    --white: #ffffff;
-    --card: #ffffff;
-    --border: #cbd5e0;
-    --text: #1a202c;
-    --muted: #4a5568;
-    --accent: #3b5bdb;
-    --accent-dark: #2c44b0;
-    --green: #1a7f4b;
-    --green-bg: #d3f9d8;
-    --orange: #b45309;
-    --orange-bg: #fef3c7;
-    --red: #c0392b;
-    --red-bg: #fde8e8;
-    --blue-bg: #e8eeff;
-    --radius: 14px;
-    --shadow: 0 2px 8px rgba(0,0,0,0.10);
+    --bg:#f0f4f8;--white:#ffffff;--card:#ffffff;--border:#cbd5e0;--text:#1a202c;--muted:#4a5568;
+    --accent:#3b5bdb;--accent-dark:#2c44b0;--green:#1a7f4b;--green-bg:#d3f9d8;
+    --orange:#b45309;--orange-bg:#fef3c7;--red:#c0392b;--red-bg:#fde8e8;--blue-bg:#e8eeff;
+    --radius:14px;--shadow:0 2px 8px rgba(0,0,0,0.10);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; min-height: 100vh; }
-
-  /* NAV */
-  nav {
-    background: var(--accent);
-    padding: 14px 16px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  }
-  nav h1 { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: .2px; }
-  nav span { font-size: 13px; color: #c5d0ff; }
-  .sync-btn {
-    background: #fff; color: var(--accent); border: none;
-    padding: 8px 14px; border-radius: 10px;
-    font-size: 13px; font-weight: 800; cursor: pointer;
-    display: flex; align-items: center; gap: 6px;
-    box-shadow: var(--shadow);
-  }
-  .sync-btn:disabled { opacity: .5; }
-
-  /* TABS */
-  .tabs {
-    display: flex; gap: 0;
-    background: var(--white);
-    border-bottom: 2px solid var(--border);
-    position: sticky; top: 57px; z-index: 99;
-  }
-  .tab {
-    flex: 1; padding: 13px 4px; text-align: center;
-    font-size: 13px; font-weight: 700; cursor: pointer;
-    color: var(--muted); border: none; background: none;
-    border-bottom: 3px solid transparent; margin-bottom: -2px;
-    transition: all .15s;
-  }
-  .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--blue-bg); }
-
-  /* SECTIONS */
-  .section { display: none; padding: 14px 12px; }
-  .section.active { display: block; }
-
-  /* CARDS */
-  .card {
-    background: var(--card); border-radius: var(--radius);
-    padding: 16px; margin-bottom: 14px;
-    border: 1px solid var(--border); box-shadow: var(--shadow);
-  }
-  .card-title {
-    font-size: 12px; font-weight: 800; color: var(--muted);
-    text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px;
-  }
-
-  /* STATS */
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-  .stat {
-    background: var(--white); border-radius: var(--radius);
-    padding: 14px 10px; border: 1px solid var(--border);
-    box-shadow: var(--shadow); text-align: center;
-  }
-  .stat-val { font-size: 22px; font-weight: 900; margin-bottom: 3px; }
-  .stat-label { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .c-green { color: var(--green); }
-  .c-orange { color: var(--orange); }
-  .c-blue { color: var(--accent); }
-  .c-red { color: var(--red); }
-
-  /* PROGRESS */
-  .progress-wrap { background: #e2e8f0; border-radius: 99px; height: 10px; overflow: hidden; margin: 8px 0; }
-  .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .4s; }
-
-  /* BADGES */
-  .badge {
-    font-size: 12px; font-weight: 800; padding: 4px 10px;
-    border-radius: 99px; white-space: nowrap;
-  }
-  .badge.al-dia { background: var(--green-bg); color: var(--green); }
-  .badge.atrasada { background: var(--orange-bg); color: var(--orange); }
-  .badge.completo { background: var(--blue-bg); color: var(--accent); }
-
-  /* CHIPS */
-  .cuotas-row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
-  .chip { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 99px; }
-  .chip.ok { background: var(--green-bg); color: var(--green); }
-  .chip.pend { background: var(--orange-bg); color: var(--orange); }
-
-  /* ALUMNA CARD */
-  .alumna-card {
-    background: var(--white); border-radius: var(--radius);
-    padding: 14px; margin-bottom: 10px;
-    border: 2px solid var(--border); cursor: pointer;
-    transition: border-color .15s, box-shadow .15s;
-    box-shadow: var(--shadow);
-  }
-  .alumna-card:active { border-color: var(--accent); box-shadow: 0 4px 16px rgba(59,91,219,.15); }
-  .alumna-name { font-size: 17px; font-weight: 800; color: var(--text); }
-  .alumna-prof { font-size: 13px; color: var(--muted); margin-top: 2px; font-weight: 600; }
-
-  /* FORMS */
-  .field-label {
-    font-size: 14px; font-weight: 700; color: var(--text);
-    display: block; margin-bottom: 6px; margin-top: 16px;
-  }
-  input, select, textarea {
-    width: 100%; background: #fff;
-    border: 2px solid var(--border); color: var(--text);
-    padding: 12px 14px; border-radius: 10px;
-    font-size: 16px; outline: none; font-family: inherit;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-  textarea { resize: none; height: 72px; }
-  input[readonly] { background: #f7fafc; color: var(--muted); }
-
-  /* BUTTONS */
-  .btn {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; padding: 15px; border-radius: 12px; border: none;
-    font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 12px;
-    letter-spacing: .2px; transition: opacity .15s, transform .1s;
-  }
-  .btn:active { transform: scale(.98); }
-  .btn:disabled { opacity: .35; cursor: not-allowed; }
-  .btn-blue { background: var(--accent); color: #fff; }
-  .btn-green { background: var(--green); color: #fff; }
-  .btn-orange { background: #d97706; color: #fff; }
-  .btn-red { background: var(--red); color: #fff; }
-  .btn-outline { background: #fff; color: var(--text); border: 2px solid var(--border); }
-  .btn-sm {
-    width: auto; padding: 9px 16px; font-size: 14px; margin-top: 8px;
-    border-radius: 9px;
-  }
-
-  /* FLUJO SELECTOR */
-  .flujo-box { border: 2px solid var(--border); border-radius: 12px; overflow: hidden; margin-top: 8px; }
-  .flujo-opt {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px; border-bottom: 1px solid var(--border);
-    cursor: pointer; transition: background .1s;
-  }
-  .flujo-opt:last-child { border-bottom: none; }
-  .flujo-opt:has(input:checked) { background: var(--blue-bg); }
-  .flujo-opt input[type=radio] { width: 22px; height: 22px; accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; }
-  .flujo-opt label { font-size: 15px; font-weight: 600; color: var(--text); cursor: pointer; line-height: 1.4; }
-
-  /* FIRMA */
-  .firma-section { border: 2px solid var(--border); border-radius: 12px; overflow: hidden; margin-top: 16px; }
-  .firma-header { background: #f7fafc; padding: 10px 14px; font-size: 13px; font-weight: 800; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  .firma-check {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px; border-bottom: 1px solid var(--border);
-    transition: background .1s;
-  }
-  .firma-check:last-child { border-bottom: none; }
-  .firma-check:has(input:checked) { background: var(--green-bg); }
-  .firma-check input[type=checkbox] { width: 26px; height: 26px; accent-color: var(--green); flex-shrink: 0; cursor: pointer; }
-  .firma-check label { font-size: 15px; font-weight: 600; color: var(--text); cursor: pointer; line-height: 1.4; }
-
-  /* WARNING */
-  .warning-box {
-    background: var(--orange-bg); border: 2px solid #fbbf24;
-    border-radius: 10px; padding: 11px 14px;
-    font-size: 14px; font-weight: 700; color: var(--orange);
-    margin-top: 10px; text-align: center;
-  }
-
-  /* PAGO ITEM */
-  .pago-item {
-    border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
-    border-left: 5px solid var(--green);
-    background: #f0fdf4; border-top: 1px solid #bbf7d0;
-    border-right: 1px solid #bbf7d0; border-bottom: 1px solid #bbf7d0;
-  }
-  .pago-item.pendiente { border-left-color: #d97706; background: var(--orange-bg); border-color: #fde68a; border-left-color: #d97706; }
-  .pi-nombre { font-size: 15px; font-weight: 800; color: var(--text); }
-  .pi-monto { font-size: 20px; font-weight: 900; color: var(--green); }
-  .pi-monto.pend { color: var(--orange); font-size: 16px; }
-  .pi-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .pi-detail { font-size: 13px; color: var(--muted); font-weight: 600; }
-  .pi-firmas { font-size: 12px; color: var(--green); font-weight: 700; margin-top: 5px; }
-
-  /* SEARCH */
-  .search-wrap { position: relative; margin-bottom: 12px; }
-  .search-wrap input { padding-left: 42px; font-size: 16px; }
-  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; }
-
-  /* MODAL */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; display: none; align-items: flex-end; }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--white); border-radius: 20px 20px 0 0;
-    width: 100%; max-height: 92vh; overflow-y: auto;
-    padding: 20px 16px 36px; box-shadow: 0 -4px 24px rgba(0,0,0,.18);
-  }
-  .modal-handle { width: 40px; height: 5px; background: var(--border); border-radius: 99px; margin: 0 auto 16px; }
-  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .modal-title { font-size: 20px; font-weight: 900; color: var(--text); }
-  .close-btn {
-    background: #f0f4f8; border: none; color: var(--muted);
-    width: 34px; height: 34px; border-radius: 50%;
-    font-size: 18px; cursor: pointer; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  /* SYNC */
-  .sync-status { font-size: 14px; font-weight: 700; padding: 10px 14px; border-radius: 10px; margin-top: 10px; text-align: center; }
-  .sync-status.ok { background: var(--green-bg); color: var(--green); }
-  .sync-status.error { background: var(--red-bg); color: var(--red); }
-  .sync-status.pending { background: var(--orange-bg); color: var(--orange); }
-
-  /* MISC */
-  .divider { border: none; border-top: 2px solid var(--border); margin: 16px 0; }
-  .muted { font-size: 13px; color: var(--muted); font-weight: 600; }
-  select option { background: #fff; }
-  .info-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
-  .info-row:last-child { border-bottom: none; }
-  .info-row .lbl { color: var(--muted); font-weight: 600; }
-  .info-row .val { font-weight: 800; color: var(--text); }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;font-size:16px;min-height:100vh;}
+  nav{background:var(--accent);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.18);}
+  nav h1{font-size:17px;font-weight:800;color:#fff;}
+  nav span{font-size:13px;color:#c5d0ff;}
+  .sync-btn{background:#fff;color:var(--accent);border:none;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow);}
+  .sync-btn:disabled{opacity:.5;}
+  .tabs{display:flex;background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:57px;z-index:99;}
+  .tab{flex:1;padding:13px 4px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--blue-bg);}
+  .section{display:none;padding:14px 12px;}
+  .section.active{display:block;}
+  .card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:14px;border:1px solid var(--border);box-shadow:var(--shadow);}
+  .card-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;}
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .stat{background:var(--white);border-radius:var(--radius);padding:14px 10px;border:1px solid var(--border);box-shadow:var(--shadow);text-align:center;}
+  .stat-val{font-size:22px;font-weight:900;margin-bottom:3px;}
+  .stat-label{font-size:12px;color:var(--muted);font-weight:600;}
+  .c-green{color:var(--green);}.c-orange{color:var(--orange);}.c-blue{color:var(--accent);}.c-red{color:var(--red);}
+  .progress-wrap{background:#e2e8f0;border-radius:99px;height:10px;overflow:hidden;margin:8px 0;}
+  .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .4s;}
+  .badge{font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap;}
+  .badge.al-dia{background:var(--green-bg);color:var(--green);}
+  .badge.atrasada{background:var(--orange-bg);color:var(--orange);}
+  .badge.completo{background:var(--blue-bg);color:var(--accent);}
+  .cuotas-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+  .chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;}
+  .chip.ok{background:var(--green-bg);color:var(--green);}
+  .chip.pend{background:var(--orange-bg);color:var(--orange);}
+  .alumna-card{background:var(--white);border-radius:var(--radius);padding:14px;margin-bottom:10px;border:2px solid var(--border);cursor:pointer;transition:border-color .15s;box-shadow:var(--shadow);}
+  .alumna-card:active{border-color:var(--accent);}
+  .alumna-name{font-size:17px;font-weight:800;color:var(--text);}
+  .alumna-prof{font-size:13px;color:var(--muted);margin-top:2px;font-weight:600;}
+  .field-label{font-size:14px;font-weight:700;color:var(--text);display:block;margin-bottom:6px;margin-top:16px;}
+  input,select,textarea{width:100%;background:#fff;border:2px solid var(--border);color:var(--text);padding:12px 14px;border-radius:10px;font-size:16px;outline:none;font-family:inherit;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+  textarea{resize:none;height:72px;}
+  input[readonly]{background:#f7fafc;color:var(--muted);}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:12px;border:none;font-size:16px;font-weight:800;cursor:pointer;margin-top:12px;transition:opacity .15s,transform .1s;}
+  .btn:active{transform:scale(.98);}
+  .btn:disabled{opacity:.35;cursor:not-allowed;}
+  .btn-blue{background:var(--accent);color:#fff;}
+  .btn-green{background:var(--green);color:#fff;}
+  .btn-red{background:var(--red);color:#fff;}
+  .btn-outline{background:#fff;color:var(--text);border:2px solid var(--border);}
+  .flujo-box{border:2px solid var(--border);border-radius:12px;overflow:hidden;margin-top:8px;}
+  .flujo-opt{display:flex;align-items:flex-start;gap:12px;padding:14px;border-bottom:1px solid var(--border);cursor:pointer;}
+  .flujo-opt:last-child{border-bottom:none;}
+  .flujo-opt:has(input:checked){background:var(--blue-bg);}
+  .flujo-opt input[type=radio]{width:22px;height:22px;accent-color:var(--accent);margin-top:2px;flex-shrink:0;}
+  .flujo-opt label{font-size:15px;font-weight:600;color:var(--text);cursor:pointer;line-height:1.4;}
+  .firma-section{border:2px solid var(--border);border-radius:12px;overflow:hidden;margin-top:16px;}
+  .firma-header{background:#f7fafc;padding:10px 14px;font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);}
+  .firma-check{display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid var(--border);transition:background .1s;}
+  .firma-check:last-child{border-bottom:none;}
+  .firma-check:has(input:checked){background:var(--green-bg);}
+  .firma-check input[type=checkbox]{width:26px;height:26px;accent-color:var(--green);flex-shrink:0;cursor:pointer;}
+  .firma-check label{font-size:15px;font-weight:600;color:var(--text);cursor:pointer;line-height:1.4;}
+  .warning-box{background:var(--orange-bg);border:2px solid #fbbf24;border-radius:10px;padding:11px 14px;font-size:14px;font-weight:700;color:var(--orange);margin-top:10px;text-align:center;}
+  .pago-item{border-radius:10px;padding:12px 14px;margin-bottom:8px;border-left:5px solid var(--green);background:#f0fdf4;border-top:1px solid #bbf7d0;border-right:1px solid #bbf7d0;border-bottom:1px solid #bbf7d0;}
+  .pago-item.pendiente{border-left-color:#d97706;background:var(--orange-bg);border-color:#fde68a;border-left-color:#d97706;}
+  .pi-nombre{font-size:15px;font-weight:800;color:var(--text);}
+  .pi-monto{font-size:20px;font-weight:900;color:var(--green);}
+  .pi-monto.pend{color:var(--orange);font-size:16px;}
+  .pi-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .pi-detail{font-size:13px;color:var(--muted);font-weight:600;}
+  .pi-firmas{font-size:12px;color:var(--green);font-weight:700;margin-top:5px;}
+  .search-wrap{position:relative;margin-bottom:12px;}
+  .search-wrap input{padding-left:42px;font-size:16px;}
+  .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:flex-end;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding:20px 16px 36px;box-shadow:0 -4px 24px rgba(0,0,0,.18);}
+  .modal-handle{width:40px;height:5px;background:var(--border);border-radius:99px;margin:0 auto 16px;}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .modal-title{font-size:20px;font-weight:900;color:var(--text);}
+  .close-btn{background:#f0f4f8;border:none;color:var(--muted);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .sync-status{font-size:14px;font-weight:700;padding:10px 14px;border-radius:10px;margin-top:10px;text-align:center;}
+  .sync-status.ok{background:var(--green-bg);color:var(--green);}
+  .sync-status.error{background:var(--red-bg);color:var(--red);}
+  .sync-status.pending{background:var(--orange-bg);color:var(--orange);}
+  .muted{font-size:13px;color:var(--muted);font-weight:600;}
+  .info-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:15px;}
+  .info-row:last-child{border-bottom:none;}
+  .info-row .lbl{color:var(--muted);font-weight:600;}
+  .info-row .val{font-weight:800;color:var(--text);}
+  select option{background:#fff;}
+  /* Modal editar */
+  .edit-modal{background:var(--white);border-radius:16px;padding:20px;margin:16px;box-shadow:0 4px 24px rgba(0,0,0,.2);}
 </style>
 </head>
 <body>
@@ -250,7 +109,7 @@
     <h1>🏖️ Aguas Verdes 2026</h1>
     <span>11–13 dic · GA UNLP</span>
   </div>
-  <button class="sync-btn" id="sync-btn" onclick="sincronizarDrive()">☁️ Sync Drive</button>
+  <button class="sync-btn" id="sync-btn" onclick="mostrarFirebaseInfo()">☁️ Firebase</button>
 </nav>
 
 <div class="tabs">
@@ -286,20 +145,16 @@
 <div id="tab-nuevo" class="section">
   <div class="card">
     <div class="card-title">💵 Registrar nuevo pago</div>
-
     <label class="field-label">👧 Alumna *</label>
     <select id="pago-alumna" onchange="onAlumnaChange()">
       <option value="">— Seleccioná una alumna —</option>
     </select>
-
     <label class="field-label">📅 Cuota / Concepto *</label>
     <select id="pago-cuota" onchange="onCuotaChange()">
       <option value="">— Primero seleccioná la alumna —</option>
     </select>
-
-    <label class="field-label">💲 Monto a recibir</label>
+    <label class="field-label">💲 Monto</label>
     <input type="number" id="pago-monto" readonly placeholder="Se completa automáticamente">
-
     <label class="field-label">📦 ¿Cómo se entrega el dinero? *</label>
     <div class="flujo-box">
       <div class="flujo-opt">
@@ -311,7 +166,6 @@
         <label for="flujo-directo">🤝 La familia me lo entregó <strong>directamente a mí</strong> (José María)</label>
       </div>
     </div>
-
     <div id="bloque-profe">
       <label class="field-label">👩‍🏫 Profesora que entrega el dinero *</label>
       <select id="pago-profe">
@@ -320,13 +174,10 @@
         <option>Milagros</option><option>Catalina</option>
       </select>
     </div>
-
     <label class="field-label">👪 Padre / Madre que entregó el dinero <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
     <input type="text" id="pago-familia" placeholder="Ej: María González (mamá de Sofía)">
-
     <label class="field-label">📝 Observaciones (opcional)</label>
     <textarea id="pago-obs" placeholder="Cualquier aclaración adicional..."></textarea>
-
     <div class="firma-section">
       <div class="firma-header">✅ Confirmación obligatoria — ambas partes</div>
       <div class="firma-check" id="firma-profe-wrap">
@@ -338,10 +189,7 @@
         <label for="firma-coord">🧑‍💼 José María confirma que recibió el dinero</label>
       </div>
     </div>
-
-    <button class="btn btn-green" id="btn-guardar" onclick="guardarPago()" disabled>
-      ✅ Guardar pago
-    </button>
+    <button class="btn btn-green" id="btn-guardar" onclick="guardarPago()" disabled>✅ Guardar pago</button>
     <div class="warning-box" id="firma-warning">⚠️ Necesitás marcar ambas confirmaciones para guardar</div>
   </div>
 </div>
@@ -358,13 +206,12 @@
       <option>Sabrina</option><option>Mailén</option>
       <option>Milagros</option><option>Catalina</option>
     </select>
-    <label class="field-label">Contacto familia (WhatsApp / email, opcional)</label>
-    <input type="text" id="cfg-contacto" placeholder="Ej: 221-555-1234">
     <label class="field-label">DNI de la alumna (opcional)</label>
     <input type="text" id="cfg-dni" placeholder="Ej: 55.123.456">
+    <label class="field-label">Contacto familia (opcional)</label>
+    <input type="text" id="cfg-contacto" placeholder="Ej: 221-555-1234">
     <button class="btn btn-blue" onclick="agregarAlumna()">➕ Agregar alumna</button>
   </div>
-
   <div class="card">
     <div class="card-title">ℹ️ Datos del viaje</div>
     <div class="info-row"><span class="lbl">Destino</span><span class="val">Aguas Verdes</span></div>
@@ -377,25 +224,30 @@
     <div class="info-row"><span class="lbl">Cuotas</span><span class="val">4 × $25.000 (ago–nov)</span></div>
     <div class="info-row"><span class="lbl">Pago</span><span class="val">Efectivo</span></div>
   </div>
-
   <div class="card">
-    <div class="card-title">☁️ Sincronizar con Google Drive</div>
-    <p class="muted" style="margin-bottom:12px">Guardá todos los datos en una planilla en tu Drive. Si ya existe, la actualiza.</p>
-    <button class="btn btn-blue" onclick="sincronizarDrive()">☁️ Sincronizar ahora</button>
-    <div id="sync-status-msg"></div>
-    <p class="muted" style="margin-top:10px" id="sync-last"></p>
+    <div class="card-title">☁️ Sincronización Firebase</div>
+    <div id="firebase-status" class="sync-status pending">⏳ Firebase no configurado aún</div>
+    <p class="muted" style="margin-top:10px">Para activar la sincronización en la nube, pegá acá tu configuración de Firebase:</p>
+    <label class="field-label">API Key</label>
+    <input type="text" id="fb-apikey" placeholder="AIzaSy...">
+    <label class="field-label">Project ID</label>
+    <input type="text" id="fb-projectid" placeholder="viaje-aguas-verdes">
+    <label class="field-label">App ID</label>
+    <input type="text" id="fb-appid" placeholder="1:123456:web:abc...">
+    <button class="btn btn-blue" onclick="guardarConfigFirebase()">💾 Guardar configuración Firebase</button>
+    <button class="btn btn-green" id="btn-sync-firebase" onclick="sincronizarFirebase()" style="display:none">☁️ Sincronizar ahora</button>
+    <p class="muted" style="margin-top:8px" id="sync-last"></p>
   </div>
-
   <div class="card">
     <div class="card-title">💾 Backup local</div>
-    <button class="btn btn-outline" onclick="exportarDatos()">📤 Exportar backup (JSON)</button>
-    <button class="btn btn-outline" onclick="importarDatos()">📥 Importar backup (JSON)</button>
+    <button class="btn btn-outline" onclick="exportarDatos()">📤 Exportar backup JSON</button>
+    <button class="btn btn-outline" onclick="importarDatos()">📥 Importar backup JSON</button>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="leerImport(event)">
     <button class="btn btn-red" onclick="resetearDatos()">🗑️ Borrar todos los datos</button>
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL ALUMNA -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -404,6 +256,33 @@
       <button class="close-btn" onclick="closeModalBtn()">✕</button>
     </div>
     <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR ALUMNA -->
+<div class="modal-overlay" id="modal-editar-overlay" onclick="closeEditModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">✏️ Editar alumna</span>
+      <button class="close-btn" onclick="closeEditModalBtn()">✕</button>
+    </div>
+    <div id="modal-editar-body">
+      <label class="field-label">Nombre completo *</label>
+      <input type="text" id="edit-nombre" placeholder="Nombre completo">
+      <label class="field-label">Profesora *</label>
+      <select id="edit-prof">
+        <option>Sabrina</option><option>Mailén</option>
+        <option>Milagros</option><option>Catalina</option>
+      </select>
+      <label class="field-label">DNI (opcional)</label>
+      <input type="text" id="edit-dni" placeholder="Ej: 55.123.456">
+      <label class="field-label">Contacto familia (opcional)</label>
+      <input type="text" id="edit-contacto" placeholder="Ej: 221-555-1234">
+      <input type="hidden" id="edit-id">
+      <button class="btn btn-blue" onclick="guardarEdicion()">💾 Guardar cambios</button>
+      <button class="btn btn-outline" onclick="closeEditModalBtn()" style="margin-top:8px">Cancelar</button>
+    </div>
   </div>
 </div>
 
@@ -419,10 +298,82 @@ const CUOTAS_DEF=[
   {id:'nov',   nombre:'Cuota Noviembre', monto:25000, vence:'2026-11-30'},
 ];
 
-function loadData(){try{return JSON.parse(localStorage.getItem('av2026')||'{"alumnas":[],"pagos":[],"syncLog":[]}')}catch{return{alumnas:[],pagos:[],syncLog:[]}}}
+// ── Storage ───────────────────────────────────────────────────────────────────
+function loadData(){
+  try{return JSON.parse(localStorage.getItem('av2026')||'{"alumnas":[],"pagos":[],"syncLog":[],"iniciado":false}');}
+  catch{return{alumnas:[],pagos:[],syncLog:[],iniciado:false};}
+}
 function saveData(d){localStorage.setItem('av2026',JSON.stringify(d));}
 const getData=loadData;
 
+// ── Precarga ÚNICA desde backup real ─────────────────────────────────────────
+(function precargar(){
+  const d=loadData();
+  if(d.iniciado)return;
+  d.alumnas=[
+    {id:"a1781664010893852798",nombre:"Margarita Villar Isoardi",profesora:"Catalina",contacto:"",dni:""},
+    {id:"a1781664010931982403",nombre:"Irupé Ferreyra Andrinolo",profesora:"Catalina",contacto:"",dni:""},
+    {id:"a1781664010932633805",nombre:"Isabella Angeloni",profesora:"Catalina",contacto:"",dni:""},
+    {id:"a1781664010932821579",nombre:"Martina Negrín",profesora:"Catalina",contacto:"",dni:""},
+    {id:"a1781664010933430651",nombre:"Clara Intelisano",profesora:"Catalina",contacto:"",dni:""},
+    {id:"a1781664010933996960",nombre:"Martina De Maria Ferrari",profesora:"Catalina",contacto:"",dni:""},
+    {id:"a1781664010933224272",nombre:"Martina Perez Gonella",profesora:"Mailén",contacto:"",dni:""},
+    {id:"a1781664010933950055",nombre:"Carmela Iberbia",profesora:"Mailén",contacto:"",dni:""},
+    {id:"a1781664010933184750",nombre:"Gonella Luna",profesora:"Mailén",contacto:"",dni:""},
+    {id:"a1781664010933278614",nombre:"Isabella Gury",profesora:"Mailén",contacto:"",dni:""},
+    {id:"a1781664010933652083",nombre:"Amanda L. Soprano",profesora:"Sabrina",contacto:"",dni:""},
+    {id:"a1781664010933904322",nombre:"Juana Alo Fernández",profesora:"Sabrina",contacto:"",dni:""},
+    {id:"a1781664010933848940",nombre:"Ana Islas",profesora:"Sabrina",contacto:"",dni:""},
+    {id:"a1781664010933466396",nombre:"Renata Mansilla",profesora:"Sabrina",contacto:"",dni:""},
+    {id:"a1781664010933725260",nombre:"Pilar Gonzalez",profesora:"Sabrina",contacto:"",dni:""},
+    {id:"a1781664010933947409",nombre:"Fiorella Rossell",profesora:"Sabrina",contacto:"",dni:""},
+  ];
+  d.pagos=[
+    {id:"p178166401090098179",alumnaId:"a1781664010893852798",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.900Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010932740788",alumnaId:"a1781664010931982403",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010932247219",alumnaId:"a1781664010932633805",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010932914272",alumnaId:"a1781664010932821579",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933844397",alumnaId:"a1781664010933430651",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933801865",alumnaId:"a1781664010933996960",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933126210",alumnaId:"a1781664010933224272",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p178166401093340512",alumnaId:"a1781664010933950055",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933504889",alumnaId:"a1781664010933184750",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933961199",alumnaId:"a1781664010933278614",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933900130",alumnaId:"a1781664010933652083",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933910358",alumnaId:"a1781664010933904322",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933696958",alumnaId:"a1781664010933848940",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933816201",alumnaId:"a1781664010933466396",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933713445",alumnaId:"a1781664010933725260",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933537721",alumnaId:"a1781664010933947409",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+  ];
+  d.syncLog=[];
+  d.iniciado=true;
+  saveData(d);
+})();
+  d.pagos=[
+    {id:"p178166401090098179",alumnaId:"a1781664010893852798",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.900Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010932740788",alumnaId:"a1781664010931982403",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010932247219",alumnaId:"a1781664010932633805",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010932914272",alumnaId:"a1781664010932821579",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933844397",alumnaId:"a1781664010933430651",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933801865",alumnaId:"a1781664010933996960",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933126210",alumnaId:"a1781664010933224272",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p178166401093340512",alumnaId:"a1781664010933950055",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933504889",alumnaId:"a1781664010933184750",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933961199",alumnaId:"a1781664010933278614",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933900130",alumnaId:"a1781664010933652083",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933910358",alumnaId:"a1781664010933904322",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933696958",alumnaId:"a1781664010933848940",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933816201",alumnaId:"a1781664010933466396",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933713445",alumnaId:"a1781664010933725260",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+    {id:"p1781664010933537721",alumnaId:"a1781664010933947409",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
+  ];
+  d.syncLog=[];
+  d.iniciado=true;
+  saveData(d);
+})();
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
 function showTab(t){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -431,9 +382,10 @@ function showTab(t){
   if(t==='dashboard')renderDashboard();
   if(t==='alumnas')renderAlumnas();
   if(t==='nuevo')renderNuevoForm();
-  if(t==='config')renderSyncStatus();
+  if(t==='config')renderConfigFirebase();
 }
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
 const fmtP=n=>'$'+Number(n).toLocaleString('es-AR');
 const fmtF=s=>{const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};
 const hoy=()=>new Date().toISOString().split('T')[0];
@@ -448,6 +400,7 @@ function estadoAlumna(id,pagos){
   return'al-dia';
 }
 
+// ── Dashboard ─────────────────────────────────────────────────────────────────
 function renderDashboard(){
   const d=getData();
   const total=d.alumnas.length*COSTO_TOTAL;
@@ -460,17 +413,15 @@ function renderDashboard(){
     {val:d.alumnas.filter(a=>estadoAlumna(a.id,d.pagos)==='completo').length,label:'Viaje completo',cls:'c-green'},
   ].map(s=>`<div class="stat"><div class="stat-val ${s.cls}">${s.val}</div><div class="stat-label">${s.label}</div></div>`).join('');
   document.getElementById('dash-progress').style.width=pct+'%';
-  document.getElementById('dash-progress-label').innerHTML=`<span class="c-green">${fmtP(rec)}</span> de ${fmtP(total)} &nbsp;<span style="color:var(--muted);font-size:13px">(${pct}%)</span>`;
-
+  document.getElementById('dash-progress-label').innerHTML=`<span class="c-green">${fmtP(rec)}</span> de ${fmtP(total)} <span style="color:var(--muted);font-size:13px">(${pct}%)</span>`;
   const prox=CUOTAS_DEF.filter(c=>{const di=diasHasta(c.vence);return di>=0&&di<=14;});
-  let vhtml='<div class="card-title">⏰ Vencimientos próximos (14 días)</div>';
-  if(!prox.length)vhtml+='<p class="muted">Sin vencimientos próximos.</p>';
+  let vhtml='<div class="card-title">⏰ Vencimientos próximos</div>';
+  if(!prox.length)vhtml+='<p class="muted">Sin vencimientos en los próximos 14 días.</p>';
   prox.forEach(c=>{
     const pend=d.alumnas.filter(a=>!cuotasPagadas(a.id,d.pagos).has(c.id)).length;
     vhtml+=`<div class="info-row"><span class="lbl"><b>${c.nombre}</b> · ${fmtF(c.vence)}</span><span style="font-weight:800;color:var(--orange)">${pend} pendientes</span></div>`;
   });
   document.getElementById('dash-vencimientos').innerHTML=vhtml;
-
   let chtml='';
   CUOTAS_DEF.forEach(c=>{
     const pg=d.alumnas.filter(a=>cuotasPagadas(a.id,d.pagos).has(c.id)).length;
@@ -484,24 +435,23 @@ function renderDashboard(){
       <div class="progress-wrap"><div class="progress-fill" style="width:${pct2}%"></div></div>
     </div>`;
   });
-  document.getElementById('dash-cuotas').innerHTML=chtml||'<p class="muted">Sin alumnas aún.</p>';
-
+  document.getElementById('dash-cuotas').innerHTML=chtml||'<p class="muted">Sin alumnas.</p>';
   let phtml='';
   PROFES.forEach(pr=>{
-    const alumnas=d.alumnas.filter(a=>a.profesora===pr);
-    if(!alumnas.length)return;
-    const rec2=alumnas.reduce((s,a)=>s+totalPagado(a.id,d.pagos),0);
-    const tot2=alumnas.length*COSTO_TOTAL;
-    const p2=Math.round(rec2/tot2*100);
+    const al=d.alumnas.filter(a=>a.profesora===pr);
+    if(!al.length)return;
+    const rec2=al.reduce((s,a)=>s+totalPagado(a.id,d.pagos),0);
+    const p2=Math.round(rec2/(al.length*COSTO_TOTAL)*100);
     phtml+=`<div style="padding:10px 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>👩‍🏫 ${pr}</span><span class="muted" style="font-size:13px">${alumnas.length} alumnas</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>👩‍🏫 ${pr}</span><span class="muted" style="font-size:13px">${al.length} alumnas</span></div>
       <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span class="muted">Recaudado</span><span style="font-weight:800;color:var(--green)">${fmtP(rec2)}</span></div>
       <div class="progress-wrap"><div class="progress-fill" style="width:${p2}%"></div></div>
     </div>`;
   });
-  document.getElementById('dash-profes').innerHTML=phtml||'<p class="muted">Sin alumnas aún.</p>';
+  document.getElementById('dash-profes').innerHTML=phtml||'<p class="muted">Sin alumnas.</p>';
 }
 
+// ── Alumnas ───────────────────────────────────────────────────────────────────
 function renderAlumnas(){
   const d=getData();
   const q=(document.getElementById('search-input')?.value||'').toLowerCase();
@@ -528,6 +478,7 @@ function renderAlumnas(){
   }).join('');
 }
 
+// ── Modal ver alumna ──────────────────────────────────────────────────────────
 function openModal(id){
   const d=getData();
   const a=d.alumnas.find(x=>x.id===id);
@@ -536,8 +487,15 @@ function openModal(id){
   const pagados=pagosDeAlumna(id,d.pagos);
   const tp=totalPagado(id,d.pagos);
   let html=`<div style="display:flex;justify-content:space-between;margin-bottom:14px;padding:12px;background:#f0f4f8;border-radius:10px">
-    <div><div class="muted">Profesora</div><div style="font-size:16px;font-weight:800">👩‍🏫 ${a.profesora}</div>${a.dni?`<div class="muted" style="margin-top:4px">DNI: <b style="color:var(--text)">${a.dni}</b></div>`:''}</div>
-    <div style="text-align:right"><div class="muted">Pagado</div><div style="font-size:18px;font-weight:900;color:var(--green)">${fmtP(tp)}</div></div>
+    <div>
+      <div class="muted">Profesora</div>
+      <div style="font-size:16px;font-weight:800">👩‍🏫 ${a.profesora}</div>
+      ${a.dni?`<div class="muted" style="margin-top:4px">DNI: <b style="color:var(--text)">${a.dni}</b></div>`:''}
+    </div>
+    <div style="text-align:right">
+      <div class="muted">Pagado</div>
+      <div style="font-size:18px;font-weight:900;color:var(--green)">${fmtP(tp)}</div>
+    </div>
   </div>`;
   CUOTAS_DEF.forEach(c=>{
     const pago=pagados.find(p=>p.cuotaId===c.id);
@@ -545,7 +503,7 @@ function openModal(id){
       const ft=pago.flujo==='directo'?'Entregado directo a José María':`Entregado por ${pago.profe||'profesora'}`;
       html+=`<div class="pago-item">
         <div class="pi-row"><span class="pi-nombre">${c.nombre}</span><span class="pi-monto">${fmtP(pago.monto)}</span></div>
-        <div class="pi-row"><span class="pi-detail">📅 ${fmtF(pago.fecha)}</span><span class="pi-detail">👪 ${pago.familia||'—'}</span></div>
+        <div class="pi-row"><span class="pi-detail">📅 ${fmtF(pago.fecha)}</span>${pago.familia?`<span class="pi-detail">👪 ${pago.familia}</span>`:''}</div>
         <div class="pi-detail" style="margin-top:3px">📦 ${ft}</div>
         <div class="pi-firmas">✅ Profesora confirmó · ✅ José María confirmó</div>
         ${pago.obs?`<div class="pi-detail" style="margin-top:4px">📝 ${pago.obs}</div>`:''}
@@ -559,8 +517,8 @@ function openModal(id){
       </div>`;
     }
   });
-  html+=`<button class="btn btn-green" style="margin-top:8px" onclick="irARegistrar('${id}')">💵 Registrar pago para esta alumna</button>`;
-  html+=`<button class="btn btn-outline" style="margin-top:8px" onclick="editarAlumna('${id}')">✏️ Editar nombre / profesora</button>`;
+  html+=`<button class="btn btn-green" style="margin-top:8px" onclick="irARegistrar('${id}')">💵 Registrar pago</button>`;
+  html+=`<button class="btn btn-outline" style="margin-top:8px" onclick="abrirEditar('${id}')">✏️ Editar datos</button>`;
   html+=`<button class="btn btn-red" style="margin-top:8px" onclick="eliminarAlumna('${id}')">🗑️ Eliminar alumna</button>`;
   document.getElementById('modal-body').innerHTML=html;
   document.getElementById('modal-overlay').classList.add('open');
@@ -569,6 +527,43 @@ function closeModal(e){if(e.target===document.getElementById('modal-overlay'))cl
 function closeModalBtn(){document.getElementById('modal-overlay').classList.remove('open');}
 function irARegistrar(id){closeModalBtn();showTab('nuevo');document.getElementById('pago-alumna').value=id;onAlumnaChange();}
 
+// ── Modal EDITAR alumna (sin crear duplicados) ────────────────────────────────
+function abrirEditar(id){
+  const d=getData();
+  const a=d.alumnas.find(x=>x.id===id);
+  if(!a)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-nombre').value=a.nombre;
+  document.getElementById('edit-prof').value=a.profesora;
+  document.getElementById('edit-dni').value=a.dni||'';
+  document.getElementById('edit-contacto').value=a.contacto||'';
+  closeModalBtn();
+  document.getElementById('modal-editar-overlay').classList.add('open');
+}
+function guardarEdicion(){
+  const id=document.getElementById('edit-id').value;
+  const nombre=document.getElementById('edit-nombre').value.trim();
+  const prof=document.getElementById('edit-prof').value;
+  const dni=document.getElementById('edit-dni').value.trim();
+  const contacto=document.getElementById('edit-contacto').value.trim();
+  if(!nombre||!prof){alert('Nombre y profesora son obligatorios.');return;}
+  const d=getData();
+  const idx=d.alumnas.findIndex(a=>a.id===id);
+  if(idx===-1){alert('Alumna no encontrada.');return;}
+  // MODIFICAR en el lugar, NO agregar nueva
+  d.alumnas[idx].nombre=nombre;
+  d.alumnas[idx].profesora=prof;
+  d.alumnas[idx].dni=dni;
+  d.alumnas[idx].contacto=contacto;
+  saveData(d);
+  closeEditModalBtn();
+  renderAlumnas();
+  alert('✅ Datos actualizados correctamente.');
+}
+function closeEditModal(e){if(e.target===document.getElementById('modal-editar-overlay'))closeEditModalBtn();}
+function closeEditModalBtn(){document.getElementById('modal-editar-overlay').classList.remove('open');}
+
+// ── Nuevo Pago ────────────────────────────────────────────────────────────────
 function renderNuevoForm(){
   const d=getData();
   const sel=document.getElementById('pago-alumna');
@@ -629,9 +624,9 @@ function guardarPago(){
   if(!alumnaId||!cuotaId||!monto){alert('Seleccioná alumna y cuota.');return;}
   if(flujo==='profe'&&!profe){alert('Seleccioná la profesora que entregó el dinero.');return;}
   const d=getData();
-  d.pagos.push({id:'p'+Date.now(),alumnaId,cuotaId,monto,flujo,
-    profe:flujo==='profe'?profe:'—',familia,obs,fecha:hoy(),
-    ts:new Date().toISOString(),firmaProf:true,firmaCoord:true,sincronizado:false});
+  d.pagos.push({id:'p'+Date.now()+Math.floor(Math.random()*999999),
+    alumnaId,cuotaId,monto,flujo,profe:flujo==='profe'?profe:'—',
+    familia,obs,fecha:hoy(),ts:new Date().toISOString(),firmaProf:true,firmaCoord:true});
   saveData(d);
   ['pago-alumna','pago-cuota','pago-familia','pago-obs'].forEach(id=>{document.getElementById(id).value='';});
   document.getElementById('pago-monto').value='';
@@ -639,41 +634,24 @@ function guardarPago(){
   document.getElementById('firma-coord').checked=false;
   document.getElementById('flujo-profe').checked=true;
   onFlujoChange();checkFirmas();renderNuevoForm();
-  alert('✅ Pago registrado correctamente.\nRecordá sincronizar con Drive cuando tengas conexión.');
+  alert('✅ Pago registrado.\nRecordá sincronizar cuando tengas conexión.');
   showTab('alumnas');
 }
 
+// ── Config ────────────────────────────────────────────────────────────────────
 function agregarAlumna(){
   const nombre=document.getElementById('cfg-nombre').value.trim();
   const prof=document.getElementById('cfg-prof').value;
-  const contacto=document.getElementById('cfg-contacto').value.trim();
   const dni=document.getElementById('cfg-dni').value.trim();
+  const contacto=document.getElementById('cfg-contacto').value.trim();
   if(!nombre||!prof){alert('Nombre y profesora son obligatorios.');return;}
   const d=getData();
   if(d.alumnas.find(a=>a.nombre.toLowerCase()===nombre.toLowerCase())){alert('Ya existe una alumna con ese nombre.');return;}
-  d.alumnas.push({id:'a'+Date.now(),nombre,profesora:prof,contacto,dni});
+  d.alumnas.push({id:'a'+Date.now()+Math.floor(Math.random()*999999),nombre,profesora:prof,contacto,dni});
   saveData(d);
   ['cfg-nombre','cfg-contacto','cfg-dni'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('cfg-prof').value='';
-  alert('✅ Alumna agregada correctamente.');
-}
-function editarAlumna(id){
-  const d=getData();
-  const a=d.alumnas.find(x=>x.id===id);
-  if(!a)return;
-  const nuevoNombre=prompt('Nombre completo:',a.nombre);
-  if(nuevoNombre===null)return;
-  if(!nuevoNombre.trim()){alert('El nombre no puede estar vacío.');return;}
-  const profes=['Sabrina','Mailén','Milagros','Catalina'];
-  const opcs=profes.map((p,i)=>`${i+1}. ${p}`).join('\n');
-  const idx=parseInt(prompt(`Profesora:\n${opcs}\nIngresá el número:`, profes.indexOf(a.profesora)+1));
-  if(isNaN(idx)||idx<1||idx>4){alert('Opción inválida.');return;}
-  a.nombre=nuevoNombre.trim();
-  a.profesora=profes[idx-1];
-  saveData(d);
-  closeModalBtn();
-  renderAlumnas();
-  alert('✅ Alumna actualizada.');
+  alert('✅ Alumna agregada.');
 }
 function eliminarAlumna(id){
   if(!confirm('¿Eliminar esta alumna y todos sus pagos?\nEsta acción no se puede deshacer.'))return;
@@ -683,58 +661,83 @@ function eliminarAlumna(id){
   saveData(d);closeModalBtn();renderAlumnas();
 }
 
-async function sincronizarDrive(){
-  const btn=document.getElementById('sync-btn');
-  const msgEl=document.getElementById('sync-status-msg');
-  const setMsg=(txt,cls)=>{if(msgEl){msgEl.className='sync-status '+cls;msgEl.textContent=txt;}};
-  btn.disabled=true;btn.textContent='⏳ Sincronizando...';
-  setMsg('Preparando datos...','pending');
+// ── Firebase config ───────────────────────────────────────────────────────────
+function guardarConfigFirebase(){
+  const apiKey=document.getElementById('fb-apikey').value.trim();
+  const projectId=document.getElementById('fb-projectid').value.trim();
+  const appId=document.getElementById('fb-appid').value.trim();
+  if(!apiKey||!projectId||!appId){alert('Completá los tres campos.');return;}
+  localStorage.setItem('fbConfig',JSON.stringify({apiKey,projectId,appId}));
+  alert('✅ Configuración guardada. Ahora podés sincronizar.');
+  renderConfigFirebase();
+}
+function renderConfigFirebase(){
+  const cfg=localStorage.getItem('fbConfig');
+  const el=document.getElementById('firebase-status');
+  const btn=document.getElementById('btn-sync-firebase');
+  if(cfg){
+    const c=JSON.parse(cfg);
+    if(el){el.className='sync-status ok';el.textContent='✅ Firebase configurado: '+c.projectId;}
+    if(btn)btn.style.display='block';
+    document.getElementById('fb-apikey').value=c.apiKey;
+    document.getElementById('fb-projectid').value=c.projectId;
+    document.getElementById('fb-appid').value=c.appId;
+  } else {
+    if(el){el.className='sync-status pending';el.textContent='⏳ Firebase no configurado aún';}
+    if(btn)btn.style.display='none';
+  }
   const d=getData();
-  if(!d.pagos.length&&!d.alumnas.length){setMsg('Sin datos para sincronizar.','error');btn.disabled=false;btn.textContent='☁️ Sync Drive';return;}
-  const hdrP=['Fecha','Alumna','Profesora','Cuota','Monto','Familia','Cómo se entregó','Profesora entregó','Observaciones','Confirmación Profesora','Confirmación José María','Timestamp'];
-  const rowsP=d.pagos.map(p=>{
-    const a=d.alumnas.find(x=>x.id===p.alumnaId);
-    const c=CUOTAS_DEF.find(x=>x.id===p.cuotaId);
-    return[fmtF(p.fecha),a?.nombre||'?',a?.profesora||'?',c?.nombre||p.cuotaId,p.monto,
-      p.familia||'—',p.flujo==='directo'?'Directo a José María':'Vía profesora',
-      p.flujo==='directo'?'—':p.profe||'—',p.obs||'—','✅','✅',p.ts
-    ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');
-  });
-  const hdrA=['Alumna','Profesora','Contacto','Total pagado','Saldo pendiente','Estado',...CUOTAS_DEF.map(c=>c.nombre)];
-  const rowsA=d.alumnas.map(a=>{
-    const tp=totalPagado(a.id,d.pagos);
-    const est={completo:'Completo','al-dia':'Al día',atrasada:'Atrasada'}[estadoAlumna(a.id,d.pagos)];
-    return[a.nombre,a.profesora,a.contacto||'—',tp,COSTO_TOTAL-tp,est,
-      ...CUOTAS_DEF.map(c=>cuotasPagadas(a.id,d.pagos).has(c.id)?'PAGADA':'PENDIENTE')
-    ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');
-  });
-  const csv=[hdrP.map(v=>`"${v}"`).join(','),...rowsP].join('\n')+'\n\n'+[hdrA.map(v=>`"${v}"`).join(','),...rowsA].join('\n');
-  const contenido=`CONTROL DE PAGOS — VIAJE AGUAS VERDES 2026\nGenerado: ${new Date().toLocaleString('es-AR')}\n\n=== PAGOS ===\n${csv}`;
+  const log=d.syncLog||[];
+  const el2=document.getElementById('sync-last');
+  if(el2)el2.textContent=log.length?`Última sync: ${new Date(log[log.length-1].ts).toLocaleString('es-AR')}`:'Nunca sincronizado.';
+}
+async function sincronizarFirebase(){
+  const cfgStr=localStorage.getItem('fbConfig');
+  if(!cfgStr){alert('Primero configurá Firebase.');return;}
+  const cfg=JSON.parse(cfgStr);
+  const d=getData();
+  const url=`https://firestore.googleapis.com/v1/projects/${cfg.projectId}/databases/(default)/documents/av2026/datos`;
+  const body={fields:{
+    alumnas:{stringValue:JSON.stringify(d.alumnas)},
+    pagos:{stringValue:JSON.stringify(d.pagos)},
+    ts:{stringValue:new Date().toISOString()}
+  }};
   try{
-    const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,
-        mcp_servers:[{type:"url",url:"https://drivemcp.googleapis.com/mcp/v1",name:"google-drive"}],
-        system:"Guardá archivos en Google Drive. Respondé solo: 'OK' o 'ERROR: motivo'.",
-        messages:[{role:"user",content:`Guardá este contenido como "Pagos-AguasVerdes-2026.csv" en Google Drive. Si existe, reemplazalo:\n\n${contenido}`}]})});
-    const data=await resp.json();
-    const txt=(data.content||[]).map(i=>i.text||'').join(' ');
-    if(txt.includes('ERROR')||data.error){setMsg('❌ Error al guardar en Drive.','error');}
-    else{
-      const d2=getData();d2.syncLog=d2.syncLog||[];
-      d2.syncLog.push({ts:new Date().toISOString(),pagos:d.pagos.length,alumnas:d.alumnas.length});
-      saveData(d2);setMsg(`✅ Sincronizado: ${d.pagos.length} pagos · ${d.alumnas.length} alumnas`,'ok');
-      renderSyncStatus();
-    }
-  }catch(e){setMsg('❌ Sin conexión. Datos guardados localmente.','error');}
-  btn.disabled=false;btn.textContent='☁️ Sync Drive';
+    const r=await fetch(url+'?key='+cfg.apiKey,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok)throw new Error(await r.text());
+    d.syncLog=d.syncLog||[];
+    d.syncLog.push({ts:new Date().toISOString(),pagos:d.pagos.length,alumnas:d.alumnas.length});
+    saveData(d);
+    alert('✅ Datos sincronizados en Firebase.');
+    renderConfigFirebase();
+  }catch(e){
+    alert('❌ Error al sincronizar:\n'+e.message+'\n\nVerificá que la API key y el Project ID sean correctos.');
+  }
 }
-function renderSyncStatus(){
-  const el=document.getElementById('sync-last');if(!el)return;
-  const log=(getData().syncLog||[]);
-  if(!log.length){el.textContent='Nunca sincronizado.';return;}
-  const ult=log[log.length-1];
-  el.textContent=`Última sync: ${new Date(ult.ts).toLocaleString('es-AR')} · ${ult.pagos} pagos`;
+async function cargarDesdeFirebase(){
+  const cfgStr=localStorage.getItem('fbConfig');
+  if(!cfgStr)return;
+  const cfg=JSON.parse(cfgStr);
+  const url=`https://firestore.googleapis.com/v1/projects/${cfg.projectId}/databases/(default)/documents/av2026/datos?key=${cfg.apiKey}`;
+  try{
+    const r=await fetch(url);
+    if(!r.ok)return;
+    const data=await r.json();
+    const alumnas=JSON.parse(data.fields.alumnas.stringValue);
+    const pagos=JSON.parse(data.fields.pagos.stringValue);
+    const d=getData();
+    d.alumnas=alumnas;d.pagos=pagos;d.iniciado=true;
+    saveData(d);
+    renderDashboard();renderAlumnas();
+    console.log('Datos cargados desde Firebase');
+  }catch(e){console.log('Sin datos en Firebase o sin conexión');}
 }
+function mostrarFirebaseInfo(){
+  showTab('config');
+  setTimeout(()=>document.getElementById('firebase-status')?.scrollIntoView({behavior:'smooth'}),100);
+}
+
+// ── Backup ────────────────────────────────────────────────────────────────────
 function exportarDatos(){
   const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
@@ -749,7 +752,8 @@ function leerImport(e){
       const d=JSON.parse(ev.target.result);
       if(!d.alumnas||!d.pagos)throw 0;
       if(!confirm(`¿Importar backup?\nAlumnas: ${d.alumnas.length} · Pagos: ${d.pagos.length}\nREEMPLAZA los datos actuales.`))return;
-      saveData(d);alert('✅ Datos importados.');renderDashboard();
+      d.iniciado=true;
+      saveData(d);alert('✅ Datos importados.');renderDashboard();renderAlumnas();
     }catch{alert('❌ Archivo inválido.');}
   };
   r.readAsText(file);e.target.value='';
@@ -757,54 +761,12 @@ function leerImport(e){
 function resetearDatos(){
   if(!confirm('⚠️ ¿BORRAR TODOS los datos?\nEsta acción es IRREVERSIBLE.'))return;
   if(!confirm('Segunda confirmación:\n¿Estás completamente seguro?'))return;
-  localStorage.removeItem('av2026');alert('Datos eliminados.');renderDashboard();renderAlumnas();
+  localStorage.removeItem('av2026');
+  alert('Datos eliminados.');renderDashboard();renderAlumnas();
 }
 
-// Alumnas precargadas
-(function precargarAlumnas(){
-  const d=loadData();
-  const existe=nombre=>d.alumnas.some(a=>a.nombre.toLowerCase()===nombre.toLowerCase());
-  const todasLasAlumnas=[
-    // Catalina
-    {nombre:'Margarita Villar Isoardi',profesora:'Catalina',senia1:true},
-    {nombre:'Irupé Ferreyra Andrinolo',profesora:'Catalina',senia1:true},
-    {nombre:'Isabella Angeloni',profesora:'Catalina',senia1:true},
-    {nombre:'Martina Negrín',profesora:'Catalina',senia1:true},
-    {nombre:'Clara Intelisano',profesora:'Catalina',senia1:true},
-    {nombre:'Martina De Maria Ferrari',profesora:'Catalina',senia1:true},
-    // Mailén
-    {nombre:'Martina Perez Gonella',profesora:'Mailén',senia1:true},
-    {nombre:'Carmela Iberbia',profesora:'Mailén',senia1:true},
-    {nombre:'Isabella Gonella Luna',profesora:'Mailén',senia1:true},
-    {nombre:'Ornella Lora',profesora:'Mailén',senia1:false},
-    {nombre:'Isabella Gury',profesora:'Mailén',senia1:true},
-    // Sabrina
-    {nombre:'Amanda L. Soprano',profesora:'Sabrina',senia1:true},
-    {nombre:'Juana Alo Tornador',profesora:'Sabrina',senia1:true},
-    {nombre:'Ana Islas',profesora:'Sabrina',senia1:true},
-    {nombre:'Renata Mansella',profesora:'Sabrina',senia1:true},
-    {nombre:'Iulor Gonzalez',profesora:'Sabrina',senia1:true},
-    {nombre:'Fiorella Rossell',profesora:'Sabrina',senia1:true},
-  ];
-  todasLasAlumnas.forEach(a=>{
-    if(existe(a.nombre))return; // ya está, no tocar
-    const id='a'+Date.now()+Math.floor(Math.random()*999999);
-    d.alumnas.push({id,nombre:a.nombre,profesora:a.profesora,contacto:'',dni:''});
-    if(a.senia1){
-      d.pagos.push({
-        id:'p'+Date.now()+Math.floor(Math.random()*999999),
-        alumnaId:id,cuotaId:'senia1',monto:100000,
-        flujo:'profe',profe:a.profesora,
-        familia:'',
-        obs:'Seña 1 registrada desde planilla física firmada — 13/06/2026',
-        fecha:'2026-06-13',ts:new Date().toISOString(),
-        firmaProf:true,firmaCoord:true,sincronizado:false
-      });
-    }
-  });
-  saveData(d);
-})();
-
+// ── Init ──────────────────────────────────────────────────────────────────────
+cargarDesdeFirebase();
 renderDashboard();
 </script>
 </body>
