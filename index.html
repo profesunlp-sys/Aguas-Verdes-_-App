@@ -661,76 +661,70 @@ function eliminarAlumna(id){
   saveData(d);closeModalBtn();renderAlumnas();
 }
 
-// ── Firebase config ───────────────────────────────────────────────────────────
-function guardarConfigFirebase(){
-  const apiKey=document.getElementById('fb-apikey').value.trim();
-  const projectId=document.getElementById('fb-projectid').value.trim();
-  const appId=document.getElementById('fb-appid').value.trim();
-  if(!apiKey||!projectId||!appId){alert('Completá los tres campos.');return;}
-  localStorage.setItem('fbConfig',JSON.stringify({apiKey,projectId,appId}));
-  alert('✅ Configuración guardada. Ahora podés sincronizar.');
-  renderConfigFirebase();
-}
+// ── Firebase config hardcodeada ───────────────────────────────────────────────
+const FB={
+  apiKey:"AIzaSyDoPJnyUVLoj7lGRQI7vLQHbmikd1XWDeQ",
+  projectId:"gen-lang-client-02640914-425b1",
+  appId:"1:142484536157:web:7d7a1f538d4f3b3e0506b4"
+};
+const FB_URL=`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/av2026/datos`;
+
+function guardarConfigFirebase(){alert('Firebase ya está configurado automáticamente.');}
 function renderConfigFirebase(){
-  const cfg=localStorage.getItem('fbConfig');
   const el=document.getElementById('firebase-status');
+  if(el){el.className='sync-status ok';el.textContent='✅ Firebase conectado: '+FB.projectId;}
   const btn=document.getElementById('btn-sync-firebase');
-  if(cfg){
-    const c=JSON.parse(cfg);
-    if(el){el.className='sync-status ok';el.textContent='✅ Firebase configurado: '+c.projectId;}
-    if(btn)btn.style.display='block';
-    document.getElementById('fb-apikey').value=c.apiKey;
-    document.getElementById('fb-projectid').value=c.projectId;
-    document.getElementById('fb-appid').value=c.appId;
-  } else {
-    if(el){el.className='sync-status pending';el.textContent='⏳ Firebase no configurado aún';}
-    if(btn)btn.style.display='none';
-  }
+  if(btn)btn.style.display='block';
+  document.getElementById('fb-apikey').value=FB.apiKey;
+  document.getElementById('fb-projectid').value=FB.projectId;
+  document.getElementById('fb-appid').value=FB.appId;
   const d=getData();
   const log=d.syncLog||[];
   const el2=document.getElementById('sync-last');
   if(el2)el2.textContent=log.length?`Última sync: ${new Date(log[log.length-1].ts).toLocaleString('es-AR')}`:'Nunca sincronizado.';
 }
 async function sincronizarFirebase(){
-  const cfgStr=localStorage.getItem('fbConfig');
-  if(!cfgStr){alert('Primero configurá Firebase.');return;}
-  const cfg=JSON.parse(cfgStr);
+  const btn=document.getElementById('btn-sync-firebase');
+  const el=document.getElementById('firebase-status');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Sincronizando...';}
   const d=getData();
-  const url=`https://firestore.googleapis.com/v1/projects/${cfg.projectId}/databases/(default)/documents/av2026/datos`;
   const body={fields:{
     alumnas:{stringValue:JSON.stringify(d.alumnas)},
     pagos:{stringValue:JSON.stringify(d.pagos)},
     ts:{stringValue:new Date().toISOString()}
   }};
   try{
-    const r=await fetch(url+'?key='+cfg.apiKey,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const r=await fetch(FB_URL+'?key='+FB.apiKey,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!r.ok)throw new Error(await r.text());
     d.syncLog=d.syncLog||[];
     d.syncLog.push({ts:new Date().toISOString(),pagos:d.pagos.length,alumnas:d.alumnas.length});
     saveData(d);
-    alert('✅ Datos sincronizados en Firebase.');
+    if(el){el.className='sync-status ok';el.textContent=`✅ Sincronizado: ${d.alumnas.length} alumnas · ${d.pagos.length} pagos`;}
+    alert('✅ Datos guardados en Firebase correctamente.');
     renderConfigFirebase();
   }catch(e){
-    alert('❌ Error al sincronizar:\n'+e.message+'\n\nVerificá que la API key y el Project ID sean correctos.');
+    if(el){el.className='sync-status error';el.textContent='❌ Error al sincronizar. Revisá la conexión.';}
+    alert('❌ Error:\n'+e.message);
   }
+  if(btn){btn.disabled=false;btn.textContent='☁️ Sincronizar ahora';}
 }
 async function cargarDesdeFirebase(){
-  const cfgStr=localStorage.getItem('fbConfig');
-  if(!cfgStr)return;
-  const cfg=JSON.parse(cfgStr);
-  const url=`https://firestore.googleapis.com/v1/projects/${cfg.projectId}/databases/(default)/documents/av2026/datos?key=${cfg.apiKey}`;
   try{
-    const r=await fetch(url);
+    const r=await fetch(FB_URL+'?key='+FB.apiKey);
     if(!r.ok)return;
     const data=await r.json();
+    if(!data.fields)return;
     const alumnas=JSON.parse(data.fields.alumnas.stringValue);
     const pagos=JSON.parse(data.fields.pagos.stringValue);
     const d=getData();
-    d.alumnas=alumnas;d.pagos=pagos;d.iniciado=true;
-    saveData(d);
-    renderDashboard();renderAlumnas();
-    console.log('Datos cargados desde Firebase');
-  }catch(e){console.log('Sin datos en Firebase o sin conexión');}
+    // Solo reemplaza si Firebase tiene más datos o es primera vez
+    if(alumnas.length>=d.alumnas.length){
+      d.alumnas=alumnas;d.pagos=pagos;d.iniciado=true;
+      saveData(d);
+      renderDashboard();renderAlumnas();
+      console.log('✅ Datos cargados desde Firebase');
+    }
+  }catch(e){console.log('Sin conexión o sin datos en Firebase aún.');}
 }
 function mostrarFirebaseInfo(){
   showTab('config');
