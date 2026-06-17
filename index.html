@@ -764,20 +764,46 @@ function resetearDatos(){
 // Alumnas precargadas
 (function precargarAlumnas(){
   const d=loadData();
-  if(d.alumnas.length>0)return; // no sobreescribir si ya hay datos
+  if(d.alumnas.length>0)return;
   const lista=[
+    // Catalina
     {nombre:'Margarita Villar Isoardi',profesora:'Catalina'},
     {nombre:'Irupé Ferreyra Andrinolo',profesora:'Catalina'},
     {nombre:'Isabella Angeloni',profesora:'Catalina'},
     {nombre:'Martina Negrín',profesora:'Catalina'},
     {nombre:'Clara Intelisano',profesora:'Catalina'},
     {nombre:'Martina De Maria Ferrari',profesora:'Catalina'},
+    // Mailén
     {nombre:'Martina Perez Gonella',profesora:'Mailén'},
     {nombre:'Carmela Iberbia',profesora:'Mailén'},
     {nombre:'Isabella Gonella Luna',profesora:'Mailén'},
     {nombre:'Ornella Lora',profesora:'Mailén'},
+    {nombre:'Isabella Gury',profesora:'Mailén'},
+    // Sabrina
+    {nombre:'Amanda L. Soprano',profesora:'Sabrina'},
+    {nombre:'Juana Alo Tornador',profesora:'Sabrina'},
+    {nombre:'Ana Islas',profesora:'Sabrina'},
+    {nombre:'Renata Mansella',profesora:'Sabrina'},
+    {nombre:'Iulor Gonzalez',profesora:'Sabrina'},
+    {nombre:'Fiorella Rossell',profesora:'Sabrina'},
   ];
-  lista.forEach(a=>d.alumnas.push({id:'a'+Date.now()+Math.random(),nombre:a.nombre,profesora:a.profesora,contacto:''}));
+  const hoyStr=new Date().toISOString().split('T')[0];
+  lista.forEach(a=>{
+    const id='a'+Date.now()+Math.floor(Math.random()*999999);
+    d.alumnas.push({id,nombre:a.nombre,profesora:a.profesora,contacto:'',dni:''});
+    // Registrar Seña 1 para todas excepto Ornella Lora (no aparece con ✗ en la planilla)
+    if(a.nombre!=='Ornella Lora'){
+      d.pagos.push({
+        id:'p'+Date.now()+Math.floor(Math.random()*999999),
+        alumnaId:id,cuotaId:'senia1',monto:100000,
+        flujo:'profe',profe:a.profesora,
+        familia:'(registrado desde planilla física)',
+        obs:'Seña 1 registrada desde planilla física firmada — 13/06/2026',
+        fecha:'2026-06-13',ts:new Date().toISOString(),
+        firmaProf:true,firmaCoord:true,sincronizado:false
+      });
+    }
+  });
   saveData(d);
 })();
 
