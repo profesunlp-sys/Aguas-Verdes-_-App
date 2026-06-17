@@ -5,101 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Viaje Aguas Verdes 2026</title>
 <style>
-  :root {
-    --bg:#f0f4f8;--white:#ffffff;--card:#ffffff;--border:#cbd5e0;--text:#1a202c;--muted:#4a5568;
-    --accent:#3b5bdb;--accent-dark:#2c44b0;--green:#1a7f4b;--green-bg:#d3f9d8;
-    --orange:#b45309;--orange-bg:#fef3c7;--red:#c0392b;--red-bg:#fde8e8;--blue-bg:#e8eeff;
-    --radius:14px;--shadow:0 2px 8px rgba(0,0,0,0.10);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;font-size:16px;min-height:100vh;}
-  nav{background:var(--accent);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.18);}
-  nav h1{font-size:17px;font-weight:800;color:#fff;}
-  nav span{font-size:13px;color:#c5d0ff;}
-  .sync-btn{background:#fff;color:var(--accent);border:none;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow);}
-  .sync-btn:disabled{opacity:.5;}
-  .tabs{display:flex;background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:57px;z-index:99;}
-  .tab{flex:1;padding:13px 4px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;}
-  .tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--blue-bg);}
-  .section{display:none;padding:14px 12px;}
-  .section.active{display:block;}
-  .card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:14px;border:1px solid var(--border);box-shadow:var(--shadow);}
-  .card-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;}
-  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-  .stat{background:var(--white);border-radius:var(--radius);padding:14px 10px;border:1px solid var(--border);box-shadow:var(--shadow);text-align:center;}
-  .stat-val{font-size:22px;font-weight:900;margin-bottom:3px;}
-  .stat-label{font-size:12px;color:var(--muted);font-weight:600;}
-  .c-green{color:var(--green);}.c-orange{color:var(--orange);}.c-blue{color:var(--accent);}.c-red{color:var(--red);}
-  .progress-wrap{background:#e2e8f0;border-radius:99px;height:10px;overflow:hidden;margin:8px 0;}
-  .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .4s;}
-  .badge{font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap;}
-  .badge.al-dia{background:var(--green-bg);color:var(--green);}
-  .badge.atrasada{background:var(--orange-bg);color:var(--orange);}
-  .badge.completo{background:var(--blue-bg);color:var(--accent);}
-  .cuotas-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
-  .chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;}
-  .chip.ok{background:var(--green-bg);color:var(--green);}
-  .chip.pend{background:var(--orange-bg);color:var(--orange);}
-  .alumna-card{background:var(--white);border-radius:var(--radius);padding:14px;margin-bottom:10px;border:2px solid var(--border);cursor:pointer;transition:border-color .15s;box-shadow:var(--shadow);}
-  .alumna-card:active{border-color:var(--accent);}
-  .alumna-name{font-size:17px;font-weight:800;color:var(--text);}
-  .alumna-prof{font-size:13px;color:var(--muted);margin-top:2px;font-weight:600;}
-  .field-label{font-size:14px;font-weight:700;color:var(--text);display:block;margin-bottom:6px;margin-top:16px;}
-  input,select,textarea{width:100%;background:#fff;border:2px solid var(--border);color:var(--text);padding:12px 14px;border-radius:10px;font-size:16px;outline:none;font-family:inherit;}
-  input:focus,select:focus,textarea:focus{border-color:var(--accent);}
-  textarea{resize:none;height:72px;}
-  input[readonly]{background:#f7fafc;color:var(--muted);}
-  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:12px;border:none;font-size:16px;font-weight:800;cursor:pointer;margin-top:12px;transition:opacity .15s,transform .1s;}
-  .btn:active{transform:scale(.98);}
-  .btn:disabled{opacity:.35;cursor:not-allowed;}
-  .btn-blue{background:var(--accent);color:#fff;}
-  .btn-green{background:var(--green);color:#fff;}
-  .btn-red{background:var(--red);color:#fff;}
-  .btn-outline{background:#fff;color:var(--text);border:2px solid var(--border);}
-  .flujo-box{border:2px solid var(--border);border-radius:12px;overflow:hidden;margin-top:8px;}
-  .flujo-opt{display:flex;align-items:flex-start;gap:12px;padding:14px;border-bottom:1px solid var(--border);cursor:pointer;}
-  .flujo-opt:last-child{border-bottom:none;}
-  .flujo-opt:has(input:checked){background:var(--blue-bg);}
-  .flujo-opt input[type=radio]{width:22px;height:22px;accent-color:var(--accent);margin-top:2px;flex-shrink:0;}
-  .flujo-opt label{font-size:15px;font-weight:600;color:var(--text);cursor:pointer;line-height:1.4;}
-  .firma-section{border:2px solid var(--border);border-radius:12px;overflow:hidden;margin-top:16px;}
-  .firma-header{background:#f7fafc;padding:10px 14px;font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);}
-  .firma-check{display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid var(--border);transition:background .1s;}
-  .firma-check:last-child{border-bottom:none;}
-  .firma-check:has(input:checked){background:var(--green-bg);}
-  .firma-check input[type=checkbox]{width:26px;height:26px;accent-color:var(--green);flex-shrink:0;cursor:pointer;}
-  .firma-check label{font-size:15px;font-weight:600;color:var(--text);cursor:pointer;line-height:1.4;}
-  .warning-box{background:var(--orange-bg);border:2px solid #fbbf24;border-radius:10px;padding:11px 14px;font-size:14px;font-weight:700;color:var(--orange);margin-top:10px;text-align:center;}
-  .pago-item{border-radius:10px;padding:12px 14px;margin-bottom:8px;border-left:5px solid var(--green);background:#f0fdf4;border-top:1px solid #bbf7d0;border-right:1px solid #bbf7d0;border-bottom:1px solid #bbf7d0;}
-  .pago-item.pendiente{border-left-color:#d97706;background:var(--orange-bg);border-color:#fde68a;border-left-color:#d97706;}
-  .pi-nombre{font-size:15px;font-weight:800;color:var(--text);}
-  .pi-monto{font-size:20px;font-weight:900;color:var(--green);}
-  .pi-monto.pend{color:var(--orange);font-size:16px;}
-  .pi-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-  .pi-detail{font-size:13px;color:var(--muted);font-weight:600;}
-  .pi-firmas{font-size:12px;color:var(--green);font-weight:700;margin-top:5px;}
-  .search-wrap{position:relative;margin-bottom:12px;}
-  .search-wrap input{padding-left:42px;font-size:16px;}
-  .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;}
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:flex-end;}
-  .modal-overlay.open{display:flex;}
-  .modal{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding:20px 16px 36px;box-shadow:0 -4px 24px rgba(0,0,0,.18);}
-  .modal-handle{width:40px;height:5px;background:var(--border);border-radius:99px;margin:0 auto 16px;}
-  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-  .modal-title{font-size:20px;font-weight:900;color:var(--text);}
-  .close-btn{background:#f0f4f8;border:none;color:var(--muted);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;}
-  .sync-status{font-size:14px;font-weight:700;padding:10px 14px;border-radius:10px;margin-top:10px;text-align:center;}
-  .sync-status.ok{background:var(--green-bg);color:var(--green);}
-  .sync-status.error{background:var(--red-bg);color:var(--red);}
-  .sync-status.pending{background:var(--orange-bg);color:var(--orange);}
-  .muted{font-size:13px;color:var(--muted);font-weight:600;}
-  .info-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:15px;}
-  .info-row:last-child{border-bottom:none;}
-  .info-row .lbl{color:var(--muted);font-weight:600;}
-  .info-row .val{font-weight:800;color:var(--text);}
-  select option{background:#fff;}
-  /* Modal editar */
-  .edit-modal{background:var(--white);border-radius:16px;padding:20px;margin:16px;box-shadow:0 4px 24px rgba(0,0,0,.2);}
+:root{--bg:#f0f4f8;--white:#fff;--border:#cbd5e0;--text:#1a202c;--muted:#4a5568;--accent:#3b5bdb;--green:#1a7f4b;--green-bg:#d3f9d8;--orange:#b45309;--orange-bg:#fef3c7;--red:#c0392b;--red-bg:#fde8e8;--blue-bg:#e8eeff;--radius:14px;--shadow:0 2px 8px rgba(0,0,0,.10);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;font-size:16px;min-height:100vh;}
+nav{background:var(--accent);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.18);}
+nav h1{font-size:17px;font-weight:800;color:#fff;}
+nav span{font-size:13px;color:#c5d0ff;}
+.sync-btn{background:#fff;color:var(--accent);border:none;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:var(--shadow);}
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);position:sticky;top:57px;z-index:99;}
+.tab{flex:1;padding:13px 4px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--blue-bg);}
+.section{display:none;padding:14px 12px;}
+.section.active{display:block;}
+.card{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:14px;border:1px solid var(--border);box-shadow:var(--shadow);}
+.card-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.stat{background:#fff;border-radius:var(--radius);padding:14px 10px;border:1px solid var(--border);box-shadow:var(--shadow);text-align:center;}
+.stat-val{font-size:22px;font-weight:900;margin-bottom:3px;}
+.stat-label{font-size:12px;color:var(--muted);font-weight:600;}
+.c-green{color:var(--green);}.c-orange{color:var(--orange);}.c-blue{color:var(--accent);}.c-red{color:var(--red);}
+.progress-wrap{background:#e2e8f0;border-radius:99px;height:10px;overflow:hidden;margin:8px 0;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .4s;}
+.badge{font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap;}
+.badge.al-dia{background:var(--green-bg);color:var(--green);}
+.badge.atrasada{background:var(--orange-bg);color:var(--orange);}
+.badge.completo{background:var(--blue-bg);color:var(--accent);}
+.cuotas-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;}
+.chip.ok{background:var(--green-bg);color:var(--green);}
+.chip.pend{background:var(--orange-bg);color:var(--orange);}
+.alumna-card{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:10px;border:2px solid var(--border);cursor:pointer;box-shadow:var(--shadow);}
+.alumna-name{font-size:17px;font-weight:800;}
+.alumna-prof{font-size:13px;color:var(--muted);margin-top:2px;font-weight:600;}
+.field-label{font-size:14px;font-weight:700;color:var(--text);display:block;margin-bottom:6px;margin-top:16px;}
+input,select,textarea{width:100%;background:#fff;border:2px solid var(--border);color:var(--text);padding:12px 14px;border-radius:10px;font-size:16px;outline:none;font-family:inherit;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+textarea{resize:none;height:72px;}
+input[readonly]{background:#f7fafc;color:var(--muted);}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:12px;border:none;font-size:16px;font-weight:800;cursor:pointer;margin-top:12px;}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+.btn-blue{background:var(--accent);color:#fff;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-outline{background:#fff;color:var(--text);border:2px solid var(--border);}
+.flujo-box{border:2px solid var(--border);border-radius:12px;overflow:hidden;margin-top:8px;}
+.flujo-opt{display:flex;align-items:flex-start;gap:12px;padding:14px;border-bottom:1px solid var(--border);cursor:pointer;}
+.flujo-opt:last-child{border-bottom:none;}
+.flujo-opt input[type=radio]{width:22px;height:22px;accent-color:var(--accent);margin-top:2px;flex-shrink:0;}
+.flujo-opt label{font-size:15px;font-weight:600;cursor:pointer;line-height:1.4;}
+.firma-section{border:2px solid var(--border);border-radius:12px;overflow:hidden;margin-top:16px;}
+.firma-header{background:#f7fafc;padding:10px 14px;font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);}
+.firma-check{display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid var(--border);}
+.firma-check:last-child{border-bottom:none;}
+.firma-check input[type=checkbox]{width:26px;height:26px;accent-color:var(--green);flex-shrink:0;cursor:pointer;}
+.firma-check label{font-size:15px;font-weight:600;cursor:pointer;line-height:1.4;}
+.warning-box{background:var(--orange-bg);border:2px solid #fbbf24;border-radius:10px;padding:11px 14px;font-size:14px;font-weight:700;color:var(--orange);margin-top:10px;text-align:center;}
+.pago-item{border-radius:10px;padding:12px 14px;margin-bottom:8px;border-left:5px solid var(--green);background:#f0fdf4;border:1px solid #bbf7d0;border-left:5px solid var(--green);}
+.pago-item.pendiente{background:var(--orange-bg);border:1px solid #fde68a;border-left:5px solid #d97706;}
+.pi-nombre{font-size:15px;font-weight:800;}
+.pi-monto{font-size:20px;font-weight:900;color:var(--green);}
+.pi-monto.pend{color:var(--orange);font-size:16px;}
+.pi-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.pi-detail{font-size:13px;color:var(--muted);font-weight:600;}
+.pi-firmas{font-size:12px;color:var(--green);font-weight:700;margin-top:5px;}
+.search-wrap{position:relative;margin-bottom:12px;}
+.search-wrap input{padding-left:42px;}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:flex-end;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding:20px 16px 36px;}
+.modal-handle{width:40px;height:5px;background:var(--border);border-radius:99px;margin:0 auto 16px;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.modal-title{font-size:20px;font-weight:900;}
+.close-btn{background:#f0f4f8;border:none;color:var(--muted);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.sync-status{font-size:14px;font-weight:700;padding:10px 14px;border-radius:10px;margin-top:10px;text-align:center;}
+.sync-status.ok{background:var(--green-bg);color:var(--green);}
+.sync-status.error{background:var(--red-bg);color:var(--red);}
+.sync-status.pending{background:var(--orange-bg);color:var(--orange);}
+.muted{font-size:13px;color:var(--muted);font-weight:600;}
+.info-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:15px;}
+.info-row:last-child{border-bottom:none;}
+.info-row .lbl{color:var(--muted);font-weight:600;}
+.info-row .val{font-weight:800;}
+select option{background:#fff;}
 </style>
 </head>
 <body>
@@ -109,7 +97,7 @@
     <h1>🏖️ Aguas Verdes 2026</h1>
     <span>11–13 dic · GA UNLP</span>
   </div>
-  <button class="sync-btn" id="sync-btn" onclick="mostrarFirebaseInfo()">☁️ Firebase</button>
+  <button class="sync-btn" id="sync-btn" onclick="sincronizarFirebase()">☁️ Sync</button>
 </nav>
 
 <div class="tabs">
@@ -119,7 +107,6 @@
   <button class="tab" onclick="showTab('config')">⚙️ Config</button>
 </div>
 
-<!-- DASHBOARD -->
 <div id="tab-dashboard" class="section active">
   <div class="stats-grid" id="stats-grid"></div>
   <div class="card">
@@ -132,7 +119,6 @@
   <div class="card"><div class="card-title">👩‍🏫 Recaudado por profesora</div><div id="dash-profes"></div></div>
 </div>
 
-<!-- ALUMNAS -->
 <div id="tab-alumnas" class="section">
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
@@ -141,7 +127,6 @@
   <div id="lista-alumnas"></div>
 </div>
 
-<!-- NUEVO PAGO -->
 <div id="tab-nuevo" class="section">
   <div class="card">
     <div class="card-title">💵 Registrar nuevo pago</div>
@@ -169,14 +154,13 @@
     <div id="bloque-profe">
       <label class="field-label">👩‍🏫 Profesora que entrega el dinero *</label>
       <select id="pago-profe">
-        <option value="">— Seleccioná la profesora —</option>
-        <option>Sabrina</option><option>Mailén</option>
-        <option>Milagros</option><option>Catalina</option>
+        <option value="">— Seleccioná —</option>
+        <option>Sabrina</option><option>Mailén</option><option>Milagros</option><option>Catalina</option>
       </select>
     </div>
-    <label class="field-label">👪 Padre / Madre que entregó el dinero <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+    <label class="field-label">👪 Padre / Madre <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
     <input type="text" id="pago-familia" placeholder="Ej: María González (mamá de Sofía)">
-    <label class="field-label">📝 Observaciones (opcional)</label>
+    <label class="field-label">📝 Observaciones <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
     <textarea id="pago-obs" placeholder="Cualquier aclaración adicional..."></textarea>
     <div class="firma-section">
       <div class="firma-header">✅ Confirmación obligatoria — ambas partes</div>
@@ -194,7 +178,6 @@
   </div>
 </div>
 
-<!-- CONFIG -->
 <div id="tab-config" class="section">
   <div class="card">
     <div class="card-title">➕ Agregar alumna</div>
@@ -203,12 +186,11 @@
     <label class="field-label">Profesora a cargo *</label>
     <select id="cfg-prof">
       <option value="">— Seleccioná —</option>
-      <option>Sabrina</option><option>Mailén</option>
-      <option>Milagros</option><option>Catalina</option>
+      <option>Sabrina</option><option>Mailén</option><option>Milagros</option><option>Catalina</option>
     </select>
-    <label class="field-label">DNI de la alumna (opcional)</label>
+    <label class="field-label">DNI <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
     <input type="text" id="cfg-dni" placeholder="Ej: 55.123.456">
-    <label class="field-label">Contacto familia (opcional)</label>
+    <label class="field-label">Contacto familia <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
     <input type="text" id="cfg-contacto" placeholder="Ej: 221-555-1234">
     <button class="btn btn-blue" onclick="agregarAlumna()">➕ Agregar alumna</button>
   </div>
@@ -225,10 +207,10 @@
     <div class="info-row"><span class="lbl">Pago</span><span class="val">Efectivo</span></div>
   </div>
   <div class="card">
-    <div class="card-title">☁️ Sincronización Firebase</div>
+    <div class="card-title">☁️ Firebase — Sincronización en la nube</div>
     <div id="firebase-status" class="sync-status ok">✅ Firebase conectado</div>
-    <p class="muted" style="margin-top:10px;margin-bottom:4px">Los datos se guardan en la nube. Podés abrir la app desde cualquier dispositivo y los datos van a estar disponibles.</p>
-    <button class="btn btn-green" id="btn-sync-firebase" onclick="sincronizarFirebase()">☁️ Sincronizar ahora</button>
+    <p class="muted" style="margin-top:10px;margin-bottom:4px">Los datos se guardan en la nube. Podés abrir la app desde cualquier dispositivo.</p>
+    <button class="btn btn-green" onclick="sincronizarFirebase()">☁️ Sincronizar ahora</button>
     <p class="muted" style="margin-top:8px" id="sync-last"></p>
   </div>
   <div class="card">
@@ -240,7 +222,6 @@
   </div>
 </div>
 
-<!-- MODAL ALUMNA -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -252,7 +233,6 @@
   </div>
 </div>
 
-<!-- MODAL EDITAR ALUMNA -->
 <div class="modal-overlay" id="modal-editar-overlay" onclick="closeEditModal(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -260,499 +240,434 @@
       <span class="modal-title">✏️ Editar alumna</span>
       <button class="close-btn" onclick="closeEditModalBtn()">✕</button>
     </div>
-    <div id="modal-editar-body">
-      <label class="field-label">Nombre completo *</label>
-      <input type="text" id="edit-nombre" placeholder="Nombre completo">
-      <label class="field-label">Profesora *</label>
-      <select id="edit-prof">
-        <option>Sabrina</option><option>Mailén</option>
-        <option>Milagros</option><option>Catalina</option>
-      </select>
-      <label class="field-label">DNI (opcional)</label>
-      <input type="text" id="edit-dni" placeholder="Ej: 55.123.456">
-      <label class="field-label">Contacto familia (opcional)</label>
-      <input type="text" id="edit-contacto" placeholder="Ej: 221-555-1234">
-      <input type="hidden" id="edit-id">
+    <label class="field-label">Nombre completo *</label>
+    <input type="text" id="edit-nombre">
+    <label class="field-label">Profesora *</label>
+    <select id="edit-prof">
+      <option>Sabrina</option><option>Mailén</option><option>Milagros</option><option>Catalina</option>
+    </select>
+    <label class="field-label">DNI <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+    <input type="text" id="edit-dni">
+    <label class="field-label">Contacto familia <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+    <input type="text" id="edit-contacto">
+    <input type="hidden" id="edit-id">
+    <div style="padding:0 16px 16px">
       <button class="btn btn-blue" onclick="guardarEdicion()">💾 Guardar cambios</button>
-      <button class="btn btn-outline" onclick="closeEditModalBtn()" style="margin-top:8px">Cancelar</button>
+      <button class="btn btn-outline" onclick="closeEditModalBtn()">Cancelar</button>
     </div>
   </div>
 </div>
 
+<script id="datos-iniciales" type="application/json">
+{
+  "alumnas": [
+    {"id":"a1781664010893852798","nombre":"Margarita Villar Isoardi","profesora":"Catalina","contacto":"","dni":""},
+    {"id":"a1781664010931982403","nombre":"Irup\u00e9 Ferreyra Andrinolo","profesora":"Catalina","contacto":"","dni":""},
+    {"id":"a1781664010932633805","nombre":"Isabella Angeloni","profesora":"Catalina","contacto":"","dni":""},
+    {"id":"a1781664010932821579","nombre":"Martina Negr\u00edn","profesora":"Catalina","contacto":"","dni":""},
+    {"id":"a1781664010933430651","nombre":"Clara Intelisano","profesora":"Catalina","contacto":"","dni":""},
+    {"id":"a1781664010933996960","nombre":"Martina De Maria Ferrari","profesora":"Catalina","contacto":"","dni":""},
+    {"id":"a1781664010933224272","nombre":"Martina Perez Gonella","profesora":"Mail\u00e9n","contacto":"","dni":""},
+    {"id":"a1781664010933950055","nombre":"Carmela Iberbia","profesora":"Mail\u00e9n","contacto":"","dni":""},
+    {"id":"a1781664010933184750","nombre":"Gonella Luna","profesora":"Mail\u00e9n","contacto":"","dni":""},
+    {"id":"a1781664010933278614","nombre":"Isabella Gury","profesora":"Mail\u00e9n","contacto":"","dni":""},
+    {"id":"a1781664010933652083","nombre":"Amanda L. Soprano","profesora":"Sabrina","contacto":"","dni":""},
+    {"id":"a1781664010933904322","nombre":"Juana Alo Fern\u00e1ndez","profesora":"Sabrina","contacto":"","dni":""},
+    {"id":"a1781664010933848940","nombre":"Ana Islas","profesora":"Sabrina","contacto":"","dni":""},
+    {"id":"a1781664010933466396","nombre":"Renata Mansilla","profesora":"Sabrina","contacto":"","dni":""},
+    {"id":"a1781664010933725260","nombre":"Pilar Gonzalez","profesora":"Sabrina","contacto":"","dni":""},
+    {"id":"a1781664010933947409","nombre":"Fiorella Rossell","profesora":"Sabrina","contacto":"","dni":""}
+  ],
+  "pagos": [
+    {"id":"p1","alumnaId":"a1781664010893852798","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Catalina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p2","alumnaId":"a1781664010931982403","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Catalina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p3","alumnaId":"a1781664010932633805","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Catalina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p4","alumnaId":"a1781664010932821579","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Catalina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p5","alumnaId":"a1781664010933430651","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Catalina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p6","alumnaId":"a1781664010933996960","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Catalina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p7","alumnaId":"a1781664010933224272","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Mail\u00e9n","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p8","alumnaId":"a1781664010933950055","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Mail\u00e9n","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p9","alumnaId":"a1781664010933184750","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Mail\u00e9n","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p10","alumnaId":"a1781664010933278614","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Mail\u00e9n","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p11","alumnaId":"a1781664010933652083","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Sabrina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p12","alumnaId":"a1781664010933904322","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Sabrina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p13","alumnaId":"a1781664010933848940","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Sabrina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p14","alumnaId":"a1781664010933466396","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Sabrina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p15","alumnaId":"a1781664010933725260","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Sabrina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true},
+    {"id":"p16","alumnaId":"a1781664010933947409","cuotaId":"senia1","monto":100000,"flujo":"profe","profe":"Sabrina","familia":"","obs":"Planilla f\u00edsica 13/06/2026","fecha":"2026-06-13","firmaProf":true,"firmaCoord":true}
+  ]
+}
+</script>
+
 <script>
-const COSTO_TOTAL=450000;
-const PROFES=['Sabrina','Mailén','Milagros','Catalina'];
-const CUOTAS_DEF=[
-  {id:'senia1',nombre:'Seña 1',          monto:100000,vence:'2026-06-13'},
-  {id:'senia2',nombre:'Seña 2',          monto:250000,vence:'2026-07-05'},
-  {id:'agosto',nombre:'Cuota Agosto',    monto:25000, vence:'2026-08-31'},
-  {id:'sept',  nombre:'Cuota Septiembre',monto:25000, vence:'2026-09-30'},
-  {id:'oct',   nombre:'Cuota Octubre',   monto:25000, vence:'2026-10-31'},
-  {id:'nov',   nombre:'Cuota Noviembre', monto:25000, vence:'2026-11-30'},
+var DATOS_INICIALES = JSON.parse(document.getElementById('datos-iniciales').textContent);
+var COSTO_TOTAL = 450000;
+var PROFES = ['Sabrina','Mailén','Milagros','Catalina'];
+var CUOTAS_DEF = [
+  {id:'senia1', nombre:'Seña 1',            monto:100000, vence:'2026-06-13'},
+  {id:'senia2', nombre:'Seña 2',            monto:250000, vence:'2026-07-05'},
+  {id:'agosto', nombre:'Cuota Agosto',      monto:25000,  vence:'2026-08-31'},
+  {id:'sept',   nombre:'Cuota Septiembre',  monto:25000,  vence:'2026-09-30'},
+  {id:'oct',    nombre:'Cuota Octubre',     monto:25000,  vence:'2026-10-31'},
+  {id:'nov',    nombre:'Cuota Noviembre',   monto:25000,  vence:'2026-11-30'}
 ];
 
-// ── Storage ───────────────────────────────────────────────────────────────────
-function loadData(){
-  try{return JSON.parse(localStorage.getItem('av2026')||'{"alumnas":[],"pagos":[],"syncLog":[],"iniciado":false}');}
-  catch{return{alumnas:[],pagos:[],syncLog:[],iniciado:false};}
-}
-function saveData(d){localStorage.setItem('av2026',JSON.stringify(d));}
-const getData=loadData;
+var FB_API  = "AIzaSyDoPJnyUVLoj7lGRQI7vLQHbmikd1XWDeQ";
+var FB_PROJ = "gen-lang-client-02640914-425b1";
+var FB_URL  = "https://firestore.googleapis.com/v1/projects/" + FB_PROJ + "/databases/(default)/documents/av2026/datos";
 
-// ── Precarga ÚNICA desde backup real ─────────────────────────────────────────
-(function precargar(){
-  const d=loadData();
-  if(d.iniciado)return;
-  d.alumnas=[
-    {id:"a1781664010893852798",nombre:"Margarita Villar Isoardi",profesora:"Catalina",contacto:"",dni:""},
-    {id:"a1781664010931982403",nombre:"Irupé Ferreyra Andrinolo",profesora:"Catalina",contacto:"",dni:""},
-    {id:"a1781664010932633805",nombre:"Isabella Angeloni",profesora:"Catalina",contacto:"",dni:""},
-    {id:"a1781664010932821579",nombre:"Martina Negrín",profesora:"Catalina",contacto:"",dni:""},
-    {id:"a1781664010933430651",nombre:"Clara Intelisano",profesora:"Catalina",contacto:"",dni:""},
-    {id:"a1781664010933996960",nombre:"Martina De Maria Ferrari",profesora:"Catalina",contacto:"",dni:""},
-    {id:"a1781664010933224272",nombre:"Martina Perez Gonella",profesora:"Mailén",contacto:"",dni:""},
-    {id:"a1781664010933950055",nombre:"Carmela Iberbia",profesora:"Mailén",contacto:"",dni:""},
-    {id:"a1781664010933184750",nombre:"Gonella Luna",profesora:"Mailén",contacto:"",dni:""},
-    {id:"a1781664010933278614",nombre:"Isabella Gury",profesora:"Mailén",contacto:"",dni:""},
-    {id:"a1781664010933652083",nombre:"Amanda L. Soprano",profesora:"Sabrina",contacto:"",dni:""},
-    {id:"a1781664010933904322",nombre:"Juana Alo Fernández",profesora:"Sabrina",contacto:"",dni:""},
-    {id:"a1781664010933848940",nombre:"Ana Islas",profesora:"Sabrina",contacto:"",dni:""},
-    {id:"a1781664010933466396",nombre:"Renata Mansilla",profesora:"Sabrina",contacto:"",dni:""},
-    {id:"a1781664010933725260",nombre:"Pilar Gonzalez",profesora:"Sabrina",contacto:"",dni:""},
-    {id:"a1781664010933947409",nombre:"Fiorella Rossell",profesora:"Sabrina",contacto:"",dni:""},
-  ];
-  d.pagos=[
-    {id:"p178166401090098179",alumnaId:"a1781664010893852798",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.900Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010932740788",alumnaId:"a1781664010931982403",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010932247219",alumnaId:"a1781664010932633805",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010932914272",alumnaId:"a1781664010932821579",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933844397",alumnaId:"a1781664010933430651",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933801865",alumnaId:"a1781664010933996960",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933126210",alumnaId:"a1781664010933224272",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p178166401093340512",alumnaId:"a1781664010933950055",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933504889",alumnaId:"a1781664010933184750",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933961199",alumnaId:"a1781664010933278614",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933900130",alumnaId:"a1781664010933652083",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933910358",alumnaId:"a1781664010933904322",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933696958",alumnaId:"a1781664010933848940",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933816201",alumnaId:"a1781664010933466396",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933713445",alumnaId:"a1781664010933725260",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933537721",alumnaId:"a1781664010933947409",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-  ];
-  d.syncLog=[];
-  d.iniciado=true;
-  saveData(d);
-})();
-  d.pagos=[
-    {id:"p178166401090098179",alumnaId:"a1781664010893852798",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.900Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010932740788",alumnaId:"a1781664010931982403",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010932247219",alumnaId:"a1781664010932633805",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010932914272",alumnaId:"a1781664010932821579",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.932Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933844397",alumnaId:"a1781664010933430651",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933801865",alumnaId:"a1781664010933996960",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Catalina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933126210",alumnaId:"a1781664010933224272",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p178166401093340512",alumnaId:"a1781664010933950055",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933504889",alumnaId:"a1781664010933184750",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933961199",alumnaId:"a1781664010933278614",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Mailén",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933900130",alumnaId:"a1781664010933652083",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933910358",alumnaId:"a1781664010933904322",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933696958",alumnaId:"a1781664010933848940",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933816201",alumnaId:"a1781664010933466396",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933713445",alumnaId:"a1781664010933725260",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-    {id:"p1781664010933537721",alumnaId:"a1781664010933947409",cuotaId:"senia1",monto:100000,flujo:"profe",profe:"Sabrina",familia:"",obs:"Seña 1 registrada desde planilla física firmada — 13/06/2026",fecha:"2026-06-13",ts:"2026-06-17T02:40:10.933Z",firmaProf:true,firmaCoord:true},
-  ];
-  d.syncLog=[];
-  d.iniciado=true;
+function loadData() {
+  try { return JSON.parse(localStorage.getItem('av2026') || '{"alumnas":[],"pagos":[],"syncLog":[],"iniciado":false}'); }
+  catch(e) { return {alumnas:[],pagos:[],syncLog:[],iniciado:false}; }
+}
+function saveData(d) { localStorage.setItem('av2026', JSON.stringify(d)); }
+
+// Precarga única
+(function precargar() {
+  var d = loadData();
+  if (d.iniciado) return;
+  d.alumnas = DATOS_INICIALES.alumnas;
+  d.pagos = DATOS_INICIALES.pagos;
+  d.syncLog = [];
+  d.iniciado = true;
   saveData(d);
 })();
 
-// ── Tabs ──────────────────────────────────────────────────────────────────────
-function showTab(t){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+t).classList.add('active');
-  [...document.querySelectorAll('.tab')].find(b=>b.getAttribute('onclick').includes("'"+t+"'")).classList.add('active');
-  if(t==='dashboard')renderDashboard();
-  if(t==='alumnas')renderAlumnas();
-  if(t==='nuevo')renderNuevoForm();
-  if(t==='config')renderConfigFirebase();
+function showTab(t) {
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab-' + t).classList.add('active');
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) {
+    if (tabs[i].getAttribute('onclick').indexOf("'" + t + "'") !== -1) {
+      tabs[i].classList.add('active');
+      break;
+    }
+  }
+  if (t === 'dashboard') renderDashboard();
+  if (t === 'alumnas') renderAlumnas();
+  if (t === 'nuevo') renderNuevoForm();
+  if (t === 'config') renderSyncStatus();
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-const fmtP=n=>'$'+Number(n).toLocaleString('es-AR');
-const fmtF=s=>{const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};
-const hoy=()=>new Date().toISOString().split('T')[0];
-const diasHasta=f=>Math.ceil((new Date(f)-new Date(hoy()))/86400000);
-const pagosDeAlumna=(id,pagos)=>pagos.filter(p=>p.alumnaId===id);
-const cuotasPagadas=(id,pagos)=>new Set(pagosDeAlumna(id,pagos).map(p=>p.cuotaId));
-const totalPagado=(id,pagos)=>pagosDeAlumna(id,pagos).reduce((s,p)=>s+p.monto,0);
-function estadoAlumna(id,pagos){
-  const p=cuotasPagadas(id,pagos);
-  if(p.size===CUOTAS_DEF.length)return'completo';
-  if(CUOTAS_DEF.some(c=>!p.has(c.id)&&c.vence<hoy()))return'atrasada';
-  return'al-dia';
+function fmtP(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+function fmtF(s) { var p = s.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+function hoy() { return new Date().toISOString().split('T')[0]; }
+function diasHasta(f) { return Math.ceil((new Date(f) - new Date(hoy())) / 86400000); }
+function pagosDeAlumna(id, pagos) { return pagos.filter(function(p){ return p.alumnaId === id; }); }
+function cuotasPagadas(id, pagos) {
+  var s = new Set();
+  pagosDeAlumna(id, pagos).forEach(function(p){ s.add(p.cuotaId); });
+  return s;
+}
+function totalPagado(id, pagos) {
+  return pagosDeAlumna(id, pagos).reduce(function(s,p){ return s + p.monto; }, 0);
+}
+function estadoAlumna(id, pagos) {
+  var p = cuotasPagadas(id, pagos);
+  if (p.size === CUOTAS_DEF.length) return 'completo';
+  for (var i = 0; i < CUOTAS_DEF.length; i++) {
+    if (!p.has(CUOTAS_DEF[i].id) && CUOTAS_DEF[i].vence < hoy()) return 'atrasada';
+  }
+  return 'al-dia';
 }
 
-// ── Dashboard ─────────────────────────────────────────────────────────────────
-function renderDashboard(){
-  const d=getData();
-  const total=d.alumnas.length*COSTO_TOTAL;
-  const rec=d.pagos.reduce((s,p)=>s+p.monto,0);
-  const pct=total>0?Math.round(rec/total*100):0;
-  document.getElementById('stats-grid').innerHTML=[
-    {val:d.alumnas.length,label:'Alumnas inscriptas',cls:'c-blue'},
-    {val:fmtP(rec),label:'Total recaudado',cls:'c-green'},
-    {val:fmtP(total-rec),label:'Total pendiente',cls:'c-orange'},
-    {val:d.alumnas.filter(a=>estadoAlumna(a.id,d.pagos)==='completo').length,label:'Viaje completo',cls:'c-green'},
-  ].map(s=>`<div class="stat"><div class="stat-val ${s.cls}">${s.val}</div><div class="stat-label">${s.label}</div></div>`).join('');
-  document.getElementById('dash-progress').style.width=pct+'%';
-  document.getElementById('dash-progress-label').innerHTML=`<span class="c-green">${fmtP(rec)}</span> de ${fmtP(total)} <span style="color:var(--muted);font-size:13px">(${pct}%)</span>`;
-  const prox=CUOTAS_DEF.filter(c=>{const di=diasHasta(c.vence);return di>=0&&di<=14;});
-  let vhtml='<div class="card-title">⏰ Vencimientos próximos</div>';
-  if(!prox.length)vhtml+='<p class="muted">Sin vencimientos en los próximos 14 días.</p>';
-  prox.forEach(c=>{
-    const pend=d.alumnas.filter(a=>!cuotasPagadas(a.id,d.pagos).has(c.id)).length;
-    vhtml+=`<div class="info-row"><span class="lbl"><b>${c.nombre}</b> · ${fmtF(c.vence)}</span><span style="font-weight:800;color:var(--orange)">${pend} pendientes</span></div>`;
+function renderDashboard() {
+  var d = loadData();
+  var total = d.alumnas.length * COSTO_TOTAL;
+  var rec = d.pagos.reduce(function(s,p){ return s+p.monto; }, 0);
+  var pct = total > 0 ? Math.round(rec/total*100) : 0;
+  var stats = [
+    {val:d.alumnas.length, label:'Alumnas inscriptas', cls:'c-blue'},
+    {val:fmtP(rec), label:'Total recaudado', cls:'c-green'},
+    {val:fmtP(total-rec), label:'Total pendiente', cls:'c-orange'},
+    {val:d.alumnas.filter(function(a){ return estadoAlumna(a.id,d.pagos)==='completo'; }).length, label:'Viaje completo', cls:'c-green'}
+  ];
+  document.getElementById('stats-grid').innerHTML = stats.map(function(s){
+    return '<div class="stat"><div class="stat-val '+s.cls+'">'+s.val+'</div><div class="stat-label">'+s.label+'</div></div>';
+  }).join('');
+  document.getElementById('dash-progress').style.width = pct + '%';
+  document.getElementById('dash-progress-label').innerHTML = '<span class="c-green">'+fmtP(rec)+'</span> de '+fmtP(total)+' <span style="color:var(--muted);font-size:13px">('+pct+'%)</span>';
+
+  var prox = CUOTAS_DEF.filter(function(c){ var di=diasHasta(c.vence); return di>=0&&di<=14; });
+  var vhtml = '<div class="card-title">⏰ Vencimientos próximos</div>';
+  if (!prox.length) vhtml += '<p class="muted">Sin vencimientos en los próximos 14 días.</p>';
+  prox.forEach(function(c){
+    var pend = d.alumnas.filter(function(a){ return !cuotasPagadas(a.id,d.pagos).has(c.id); }).length;
+    vhtml += '<div class="info-row"><span class="lbl"><b>'+c.nombre+'</b> · '+fmtF(c.vence)+'</span><span style="font-weight:800;color:var(--orange)">'+pend+' pendientes</span></div>';
   });
-  document.getElementById('dash-vencimientos').innerHTML=vhtml;
-  let chtml='';
-  CUOTAS_DEF.forEach(c=>{
-    const pg=d.alumnas.filter(a=>cuotasPagadas(a.id,d.pagos).has(c.id)).length;
-    const tot=d.alumnas.length;
-    const pct2=tot>0?Math.round(pg/tot*100):0;
-    const dias=diasHasta(c.vence);
-    const vs=dias<0?`<span class="c-red" style="font-size:12px;font-weight:700">⚠️ Vencida</span>`:dias===0?`<span class="c-orange" style="font-size:12px;font-weight:700">Hoy</span>`:`<span class="muted">${fmtF(c.vence)}</span>`;
-    chtml+=`<div style="padding:10px 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>${c.nombre}</span>${vs}</div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span class="muted">${pg} de ${tot} pagas</span><span style="font-weight:800;color:var(--accent)">${fmtP(c.monto)}</span></div>
-      <div class="progress-wrap"><div class="progress-fill" style="width:${pct2}%"></div></div>
-    </div>`;
+  document.getElementById('dash-vencimientos').innerHTML = vhtml;
+
+  var chtml = '';
+  CUOTAS_DEF.forEach(function(c){
+    var pg = d.alumnas.filter(function(a){ return cuotasPagadas(a.id,d.pagos).has(c.id); }).length;
+    var tot = d.alumnas.length;
+    var pct2 = tot > 0 ? Math.round(pg/tot*100) : 0;
+    var dias = diasHasta(c.vence);
+    var vs = dias<0 ? '<span class="c-red" style="font-size:12px;font-weight:700">⚠️ Vencida</span>' : dias===0 ? '<span class="c-orange" style="font-size:12px;font-weight:700">Hoy</span>' : '<span class="muted">'+fmtF(c.vence)+'</span>';
+    chtml += '<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>'+c.nombre+'</span>'+vs+'</div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span class="muted">'+pg+' de '+tot+' pagas</span><span style="font-weight:800;color:var(--accent)">'+fmtP(c.monto)+'</span></div><div class="progress-wrap"><div class="progress-fill" style="width:'+pct2+'%"></div></div></div>';
   });
-  document.getElementById('dash-cuotas').innerHTML=chtml||'<p class="muted">Sin alumnas.</p>';
-  let phtml='';
-  PROFES.forEach(pr=>{
-    const al=d.alumnas.filter(a=>a.profesora===pr);
-    if(!al.length)return;
-    const rec2=al.reduce((s,a)=>s+totalPagado(a.id,d.pagos),0);
-    const p2=Math.round(rec2/(al.length*COSTO_TOTAL)*100);
-    phtml+=`<div style="padding:10px 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>👩‍🏫 ${pr}</span><span class="muted" style="font-size:13px">${al.length} alumnas</span></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span class="muted">Recaudado</span><span style="font-weight:800;color:var(--green)">${fmtP(rec2)}</span></div>
-      <div class="progress-wrap"><div class="progress-fill" style="width:${p2}%"></div></div>
-    </div>`;
+  document.getElementById('dash-cuotas').innerHTML = chtml || '<p class="muted">Sin alumnas.</p>';
+
+  var phtml = '';
+  PROFES.forEach(function(pr){
+    var al = d.alumnas.filter(function(a){ return a.profesora===pr; });
+    if (!al.length) return;
+    var rec2 = al.reduce(function(s,a){ return s+totalPagado(a.id,d.pagos); }, 0);
+    var p2 = Math.round(rec2/(al.length*COSTO_TOTAL)*100);
+    phtml += '<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>👩‍🏫 '+pr+'</span><span class="muted" style="font-size:13px">'+al.length+' alumnas</span></div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span class="muted">Recaudado</span><span style="font-weight:800;color:var(--green)">'+fmtP(rec2)+'</span></div><div class="progress-wrap"><div class="progress-fill" style="width:'+p2+'%"></div></div></div>';
   });
-  document.getElementById('dash-profes').innerHTML=phtml||'<p class="muted">Sin alumnas.</p>';
+  document.getElementById('dash-profes').innerHTML = phtml || '<p class="muted">Sin alumnas.</p>';
 }
 
-// ── Alumnas ───────────────────────────────────────────────────────────────────
-function renderAlumnas(){
-  const d=getData();
-  const q=(document.getElementById('search-input')?.value||'').toLowerCase();
-  const lista=d.alumnas.filter(a=>a.nombre.toLowerCase().includes(q)||a.profesora.toLowerCase().includes(q));
-  const el=document.getElementById('lista-alumnas');
-  if(!lista.length){el.innerHTML='<div class="card" style="text-align:center;padding:28px"><p class="muted" style="font-size:16px">Sin alumnas. Agregá desde ⚙️ Config.</p></div>';return;}
-  const badgeMap={'al-dia':'✅ Al día','atrasada':'⚠️ Atrasada','completo':'🏆 Completo'};
-  el.innerHTML=lista.map(a=>{
-    const est=estadoAlumna(a.id,d.pagos);
-    const tp=totalPagado(a.id,d.pagos);
-    const pagadas=cuotasPagadas(a.id,d.pagos);
-    const chips=CUOTAS_DEF.map(c=>`<span class="chip ${pagadas.has(c.id)?'ok':'pend'}">${c.nombre.replace('Cuota ','')}</span>`).join('');
-    return`<div class="alumna-card" onclick="openModal('${a.id}')">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div><div class="alumna-name">${a.nombre}</div><div class="alumna-prof">👩‍🏫 ${a.profesora}</div></div>
-        <span class="badge ${est}">${badgeMap[est]}</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:8px;padding:8px;background:#f7fafc;border-radius:8px">
-        <span>Pagado: <span class="c-green">${fmtP(tp)}</span></span>
-        <span>Resta: <span class="c-orange">${fmtP(COSTO_TOTAL-tp)}</span></span>
-      </div>
-      <div class="cuotas-row">${chips}</div>
-    </div>`;
+function renderAlumnas() {
+  var d = loadData();
+  var q = (document.getElementById('search-input') ? document.getElementById('search-input').value : '').toLowerCase();
+  var lista = d.alumnas.filter(function(a){ return a.nombre.toLowerCase().indexOf(q)!==-1 || a.profesora.toLowerCase().indexOf(q)!==-1; });
+  var el = document.getElementById('lista-alumnas');
+  if (!lista.length) { el.innerHTML = '<div class="card" style="text-align:center;padding:28px"><p class="muted">Sin alumnas. Agregá desde ⚙️ Config.</p></div>'; return; }
+  var badgeMap = {'al-dia':'✅ Al día','atrasada':'⚠️ Atrasada','completo':'🏆 Completo'};
+  el.innerHTML = lista.map(function(a){
+    var est = estadoAlumna(a.id, d.pagos);
+    var tp = totalPagado(a.id, d.pagos);
+    var pagadas = cuotasPagadas(a.id, d.pagos);
+    var chips = CUOTAS_DEF.map(function(c){ return '<span class="chip '+(pagadas.has(c.id)?'ok':'pend')+'">'+c.nombre.replace('Cuota ','')+'</span>'; }).join('');
+    return '<div class="alumna-card" onclick="openModal(\''+a.id+'\')"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div class="alumna-name">'+a.nombre+'</div><div class="alumna-prof">👩‍🏫 '+a.profesora+'</div></div><span class="badge '+est+'">'+badgeMap[est]+'</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:8px;padding:8px;background:#f7fafc;border-radius:8px"><span>Pagado: <span class="c-green">'+fmtP(tp)+'</span></span><span>Resta: <span class="c-orange">'+fmtP(COSTO_TOTAL-tp)+'</span></span></div><div class="cuotas-row">'+chips+'</div></div>';
   }).join('');
 }
 
-// ── Modal ver alumna ──────────────────────────────────────────────────────────
-function openModal(id){
-  const d=getData();
-  const a=d.alumnas.find(x=>x.id===id);
-  if(!a)return;
-  document.getElementById('modal-nombre').textContent=a.nombre;
-  const pagados=pagosDeAlumna(id,d.pagos);
-  const tp=totalPagado(id,d.pagos);
-  let html=`<div style="display:flex;justify-content:space-between;margin-bottom:14px;padding:12px;background:#f0f4f8;border-radius:10px">
-    <div>
-      <div class="muted">Profesora</div>
-      <div style="font-size:16px;font-weight:800">👩‍🏫 ${a.profesora}</div>
-      ${a.dni?`<div class="muted" style="margin-top:4px">DNI: <b style="color:var(--text)">${a.dni}</b></div>`:''}
-    </div>
-    <div style="text-align:right">
-      <div class="muted">Pagado</div>
-      <div style="font-size:18px;font-weight:900;color:var(--green)">${fmtP(tp)}</div>
-    </div>
-  </div>`;
-  CUOTAS_DEF.forEach(c=>{
-    const pago=pagados.find(p=>p.cuotaId===c.id);
-    if(pago){
-      const ft=pago.flujo==='directo'?'Entregado directo a José María':`Entregado por ${pago.profe||'profesora'}`;
-      html+=`<div class="pago-item">
-        <div class="pi-row"><span class="pi-nombre">${c.nombre}</span><span class="pi-monto">${fmtP(pago.monto)}</span></div>
-        <div class="pi-row"><span class="pi-detail">📅 ${fmtF(pago.fecha)}</span>${pago.familia?`<span class="pi-detail">👪 ${pago.familia}</span>`:''}</div>
-        <div class="pi-detail" style="margin-top:3px">📦 ${ft}</div>
-        <div class="pi-firmas">✅ Profesora confirmó · ✅ José María confirmó</div>
-        ${pago.obs?`<div class="pi-detail" style="margin-top:4px">📝 ${pago.obs}</div>`:''}
-      </div>`;
+function openModal(id) {
+  var d = loadData();
+  var a = d.alumnas.find(function(x){ return x.id===id; });
+  if (!a) return;
+  document.getElementById('modal-nombre').textContent = a.nombre;
+  var pagados = pagosDeAlumna(id, d.pagos);
+  var tp = totalPagado(id, d.pagos);
+  var html = '<div style="display:flex;justify-content:space-between;margin-bottom:14px;padding:12px;background:#f0f4f8;border-radius:10px"><div><div class="muted">Profesora</div><div style="font-size:16px;font-weight:800">👩‍🏫 '+a.profesora+'</div>'+(a.dni?'<div class="muted" style="margin-top:4px">DNI: <b>'+a.dni+'</b></div>':'')+'</div><div style="text-align:right"><div class="muted">Pagado</div><div style="font-size:18px;font-weight:900;color:var(--green)">'+fmtP(tp)+'</div></div></div>';
+  CUOTAS_DEF.forEach(function(c){
+    var pago = pagados.find(function(p){ return p.cuotaId===c.id; });
+    if (pago) {
+      var ft = pago.flujo==='directo' ? 'Directo a José María' : 'Vía '+pago.profe;
+      html += '<div class="pago-item"><div class="pi-row"><span class="pi-nombre">'+c.nombre+'</span><span class="pi-monto">'+fmtP(pago.monto)+'</span></div><div class="pi-row"><span class="pi-detail">📅 '+fmtF(pago.fecha)+'</span>'+(pago.familia?'<span class="pi-detail">👪 '+pago.familia+'</span>':'')+'</div><div class="pi-detail">📦 '+ft+'</div><div class="pi-firmas">✅ Profesora confirmó · ✅ José María confirmó</div>'+(pago.obs?'<div class="pi-detail" style="margin-top:4px">📝 '+pago.obs+'</div>':'')+'</div>';
     } else {
-      const dias=diasHasta(c.vence);
-      const vs=dias<0?`⚠️ Vencida hace ${Math.abs(dias)} días`:dias===0?'⚠️ Vence HOY':`Vence ${fmtF(c.vence)}`;
-      html+=`<div class="pago-item pendiente">
-        <div class="pi-row"><span class="pi-nombre">${c.nombre}</span><span class="pi-monto pend">${fmtP(c.monto)}</span></div>
-        <div class="pi-detail" style="color:var(--orange)">${vs} · PENDIENTE</div>
-      </div>`;
+      var dias = diasHasta(c.vence);
+      var vs = dias<0 ? '⚠️ Vencida hace '+Math.abs(dias)+' días' : dias===0 ? '⚠️ Vence HOY' : 'Vence '+fmtF(c.vence);
+      html += '<div class="pago-item pendiente"><div class="pi-row"><span class="pi-nombre">'+c.nombre+'</span><span class="pi-monto pend">'+fmtP(c.monto)+'</span></div><div class="pi-detail" style="color:var(--orange)">'+vs+' · PENDIENTE</div></div>';
     }
   });
-  html+=`<button class="btn btn-green" style="margin-top:8px" onclick="irARegistrar('${id}')">💵 Registrar pago</button>`;
-  html+=`<button class="btn btn-outline" style="margin-top:8px" onclick="abrirEditar('${id}')">✏️ Editar datos</button>`;
-  html+=`<button class="btn btn-red" style="margin-top:8px" onclick="eliminarAlumna('${id}')">🗑️ Eliminar alumna</button>`;
-  document.getElementById('modal-body').innerHTML=html;
+  html += '<button class="btn btn-green" style="margin-top:8px" onclick="irARegistrar(\''+id+'\')">💵 Registrar pago</button>';
+  html += '<button class="btn btn-outline" style="margin-top:8px" onclick="abrirEditar(\''+id+'\')">✏️ Editar datos</button>';
+  html += '<button class="btn btn-red" style="margin-top:8px" onclick="eliminarAlumna(\''+id+'\')">🗑️ Eliminar alumna</button>';
+  document.getElementById('modal-body').innerHTML = html;
   document.getElementById('modal-overlay').classList.add('open');
 }
-function closeModal(e){if(e.target===document.getElementById('modal-overlay'))closeModalBtn();}
-function closeModalBtn(){document.getElementById('modal-overlay').classList.remove('open');}
-function irARegistrar(id){closeModalBtn();showTab('nuevo');document.getElementById('pago-alumna').value=id;onAlumnaChange();}
+function closeModal(e) { if (e.target===document.getElementById('modal-overlay')) closeModalBtn(); }
+function closeModalBtn() { document.getElementById('modal-overlay').classList.remove('open'); }
+function irARegistrar(id) { closeModalBtn(); showTab('nuevo'); document.getElementById('pago-alumna').value = id; onAlumnaChange(); }
 
-// ── Modal EDITAR alumna (sin crear duplicados) ────────────────────────────────
-function abrirEditar(id){
-  const d=getData();
-  const a=d.alumnas.find(x=>x.id===id);
-  if(!a)return;
-  document.getElementById('edit-id').value=id;
-  document.getElementById('edit-nombre').value=a.nombre;
-  document.getElementById('edit-prof').value=a.profesora;
-  document.getElementById('edit-dni').value=a.dni||'';
-  document.getElementById('edit-contacto').value=a.contacto||'';
+function abrirEditar(id) {
+  var d = loadData();
+  var a = d.alumnas.find(function(x){ return x.id===id; });
+  if (!a) return;
+  document.getElementById('edit-id').value = id;
+  document.getElementById('edit-nombre').value = a.nombre;
+  document.getElementById('edit-prof').value = a.profesora;
+  document.getElementById('edit-dni').value = a.dni || '';
+  document.getElementById('edit-contacto').value = a.contacto || '';
   closeModalBtn();
   document.getElementById('modal-editar-overlay').classList.add('open');
 }
-function guardarEdicion(){
-  const id=document.getElementById('edit-id').value;
-  const nombre=document.getElementById('edit-nombre').value.trim();
-  const prof=document.getElementById('edit-prof').value;
-  const dni=document.getElementById('edit-dni').value.trim();
-  const contacto=document.getElementById('edit-contacto').value.trim();
-  if(!nombre||!prof){alert('Nombre y profesora son obligatorios.');return;}
-  const d=getData();
-  const idx=d.alumnas.findIndex(a=>a.id===id);
-  if(idx===-1){alert('Alumna no encontrada.');return;}
-  // MODIFICAR en el lugar, NO agregar nueva
-  d.alumnas[idx].nombre=nombre;
-  d.alumnas[idx].profesora=prof;
-  d.alumnas[idx].dni=dni;
-  d.alumnas[idx].contacto=contacto;
+function guardarEdicion() {
+  var id = document.getElementById('edit-id').value;
+  var nombre = document.getElementById('edit-nombre').value.trim();
+  var prof = document.getElementById('edit-prof').value;
+  if (!nombre || !prof) { alert('Nombre y profesora son obligatorios.'); return; }
+  var d = loadData();
+  var idx = d.alumnas.findIndex(function(a){ return a.id===id; });
+  if (idx === -1) { alert('Alumna no encontrada.'); return; }
+  d.alumnas[idx].nombre = nombre;
+  d.alumnas[idx].profesora = prof;
+  d.alumnas[idx].dni = document.getElementById('edit-dni').value.trim();
+  d.alumnas[idx].contacto = document.getElementById('edit-contacto').value.trim();
   saveData(d);
   closeEditModalBtn();
   renderAlumnas();
-  alert('✅ Datos actualizados correctamente.');
+  alert('✅ Datos actualizados.');
 }
-function closeEditModal(e){if(e.target===document.getElementById('modal-editar-overlay'))closeEditModalBtn();}
-function closeEditModalBtn(){document.getElementById('modal-editar-overlay').classList.remove('open');}
+function closeEditModal(e) { if (e.target===document.getElementById('modal-editar-overlay')) closeEditModalBtn(); }
+function closeEditModalBtn() { document.getElementById('modal-editar-overlay').classList.remove('open'); }
 
-// ── Nuevo Pago ────────────────────────────────────────────────────────────────
-function renderNuevoForm(){
-  const d=getData();
-  const sel=document.getElementById('pago-alumna');
-  const prev=sel.value;
-  sel.innerHTML='<option value="">— Seleccioná una alumna —</option>'+
-    d.alumnas.map(a=>`<option value="${a.id}">${a.nombre} (${a.profesora})</option>`).join('');
-  if(prev){sel.value=prev;onAlumnaChange();}
-  document.getElementById('firma-prof').checked=false;
-  document.getElementById('firma-coord').checked=false;
-  document.getElementById('flujo-profe').checked=true;
-  onFlujoChange();checkFirmas();
+function renderNuevoForm() {
+  var d = loadData();
+  var sel = document.getElementById('pago-alumna');
+  var prev = sel.value;
+  sel.innerHTML = '<option value="">— Seleccioná una alumna —</option>' + d.alumnas.map(function(a){ return '<option value="'+a.id+'">'+a.nombre+' ('+a.profesora+')</option>'; }).join('');
+  if (prev) { sel.value = prev; onAlumnaChange(); }
+  document.getElementById('firma-prof').checked = false;
+  document.getElementById('firma-coord').checked = false;
+  document.getElementById('flujo-profe').checked = true;
+  onFlujoChange(); checkFirmas();
 }
-function onAlumnaChange(){
-  const id=document.getElementById('pago-alumna').value;
-  const d=getData();
-  const cuotaSel=document.getElementById('pago-cuota');
-  if(!id){cuotaSel.innerHTML='<option>— Primero seleccioná la alumna —</option>';document.getElementById('pago-monto').value='';return;}
-  const a=d.alumnas.find(x=>x.id===id);
-  if(a)document.getElementById('pago-profe').value=a.profesora;
-  const pend=CUOTAS_DEF.filter(c=>!cuotasPagadas(id,d.pagos).has(c.id));
-  if(!pend.length){cuotaSel.innerHTML='<option>✅ Todas las cuotas están pagas</option>';document.getElementById('pago-monto').value='';return;}
-  cuotaSel.innerHTML=pend.map(c=>`<option value="${c.id}" data-monto="${c.monto}">${c.nombre} — ${fmtP(c.monto)} (vence ${fmtF(c.vence)})</option>`).join('');
+function onAlumnaChange() {
+  var id = document.getElementById('pago-alumna').value;
+  var d = loadData();
+  var cs = document.getElementById('pago-cuota');
+  if (!id) { cs.innerHTML = '<option>— Primero seleccioná la alumna —</option>'; document.getElementById('pago-monto').value = ''; return; }
+  var a = d.alumnas.find(function(x){ return x.id===id; });
+  if (a) document.getElementById('pago-profe').value = a.profesora;
+  var pend = CUOTAS_DEF.filter(function(c){ return !cuotasPagadas(id,d.pagos).has(c.id); });
+  if (!pend.length) { cs.innerHTML = '<option>✅ Todas las cuotas están pagas</option>'; document.getElementById('pago-monto').value = ''; return; }
+  cs.innerHTML = pend.map(function(c){ return '<option value="'+c.id+'" data-monto="'+c.monto+'">'+c.nombre+' — '+fmtP(c.monto)+' (vence '+fmtF(c.vence)+')</option>'; }).join('');
   onCuotaChange();
 }
-function onCuotaChange(){
-  const sel=document.getElementById('pago-cuota');
-  document.getElementById('pago-monto').value=sel.options[sel.selectedIndex]?.dataset?.monto||'';
+function onCuotaChange() {
+  var sel = document.getElementById('pago-cuota');
+  var opt = sel.options[sel.selectedIndex];
+  document.getElementById('pago-monto').value = (opt && opt.dataset && opt.dataset.monto) ? opt.dataset.monto : '';
 }
-function onFlujoChange(){
-  const flujo=document.querySelector('input[name="flujo"]:checked')?.value;
-  const bp=document.getElementById('bloque-profe');
-  const fw=document.getElementById('firma-profe-wrap');
-  const lf=document.getElementById('label-firma-prof');
-  if(flujo==='directo'){
-    bp.style.display='none';fw.style.display='none';
-    document.getElementById('firma-prof').checked=true;
-    lf.textContent='[Entrega directa — sin intervención de profesora]';
+function onFlujoChange() {
+  var flujo = document.querySelector('input[name="flujo"]:checked').value;
+  var bp = document.getElementById('bloque-profe');
+  var fw = document.getElementById('firma-profe-wrap');
+  var lf = document.getElementById('label-firma-prof');
+  if (flujo === 'directo') {
+    bp.style.display = 'none'; fw.style.display = 'none';
+    document.getElementById('firma-prof').checked = true;
+    lf.textContent = '[Entrega directa — sin intervención de profesora]';
   } else {
-    bp.style.display='block';fw.style.display='flex';
-    document.getElementById('firma-prof').checked=false;
-    lf.textContent='👩‍🏫 La profesora confirma que entregó el dinero a José María';
+    bp.style.display = 'block'; fw.style.display = 'flex';
+    document.getElementById('firma-prof').checked = false;
+    lf.textContent = '👩‍🏫 La profesora confirma que entregó el dinero a José María';
   }
   checkFirmas();
 }
-function checkFirmas(){
-  const ok=document.getElementById('firma-prof').checked&&document.getElementById('firma-coord').checked;
-  document.getElementById('btn-guardar').disabled=!ok;
-  document.getElementById('firma-warning').style.display=ok?'none':'block';
+function checkFirmas() {
+  var ok = document.getElementById('firma-prof').checked && document.getElementById('firma-coord').checked;
+  document.getElementById('btn-guardar').disabled = !ok;
+  document.getElementById('firma-warning').style.display = ok ? 'none' : 'block';
 }
-function guardarPago(){
-  const alumnaId=document.getElementById('pago-alumna').value;
-  const cuotaId=document.getElementById('pago-cuota').value;
-  const monto=parseInt(document.getElementById('pago-monto').value);
-  const flujo=document.querySelector('input[name="flujo"]:checked')?.value;
-  const profe=document.getElementById('pago-profe').value;
-  const familia=document.getElementById('pago-familia').value.trim();
-  const obs=document.getElementById('pago-obs').value.trim();
-  if(!alumnaId||!cuotaId||!monto){alert('Seleccioná alumna y cuota.');return;}
-  if(flujo==='profe'&&!profe){alert('Seleccioná la profesora que entregó el dinero.');return;}
-  const d=getData();
-  d.pagos.push({id:'p'+Date.now()+Math.floor(Math.random()*999999),
-    alumnaId,cuotaId,monto,flujo,profe:flujo==='profe'?profe:'—',
-    familia,obs,fecha:hoy(),ts:new Date().toISOString(),firmaProf:true,firmaCoord:true});
+function guardarPago() {
+  var alumnaId = document.getElementById('pago-alumna').value;
+  var cuotaId = document.getElementById('pago-cuota').value;
+  var monto = parseInt(document.getElementById('pago-monto').value);
+  var flujo = document.querySelector('input[name="flujo"]:checked').value;
+  var profe = document.getElementById('pago-profe').value;
+  var familia = document.getElementById('pago-familia').value.trim();
+  var obs = document.getElementById('pago-obs').value.trim();
+  if (!alumnaId || !cuotaId || !monto) { alert('Seleccioná alumna y cuota.'); return; }
+  if (flujo === 'profe' && !profe) { alert('Seleccioná la profesora.'); return; }
+  var d = loadData();
+  d.pagos.push({id:'p'+Date.now(),alumnaId:alumnaId,cuotaId:cuotaId,monto:monto,flujo:flujo,profe:flujo==='profe'?profe:'—',familia:familia,obs:obs,fecha:hoy(),ts:new Date().toISOString(),firmaProf:true,firmaCoord:true});
   saveData(d);
-  ['pago-alumna','pago-cuota','pago-familia','pago-obs'].forEach(id=>{document.getElementById(id).value='';});
-  document.getElementById('pago-monto').value='';
-  document.getElementById('firma-prof').checked=false;
-  document.getElementById('firma-coord').checked=false;
-  document.getElementById('flujo-profe').checked=true;
-  onFlujoChange();checkFirmas();renderNuevoForm();
-  alert('✅ Pago registrado.\nRecordá sincronizar cuando tengas conexión.');
+  ['pago-alumna','pago-cuota','pago-familia','pago-obs'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('pago-monto').value = '';
+  document.getElementById('firma-prof').checked = false;
+  document.getElementById('firma-coord').checked = false;
+  document.getElementById('flujo-profe').checked = true;
+  onFlujoChange(); checkFirmas(); renderNuevoForm();
+  alert('✅ Pago registrado.\nRecordá sincronizar con Firebase.');
   showTab('alumnas');
 }
 
-// ── Config ────────────────────────────────────────────────────────────────────
-function agregarAlumna(){
-  const nombre=document.getElementById('cfg-nombre').value.trim();
-  const prof=document.getElementById('cfg-prof').value;
-  const dni=document.getElementById('cfg-dni').value.trim();
-  const contacto=document.getElementById('cfg-contacto').value.trim();
-  if(!nombre||!prof){alert('Nombre y profesora son obligatorios.');return;}
-  const d=getData();
-  if(d.alumnas.find(a=>a.nombre.toLowerCase()===nombre.toLowerCase())){alert('Ya existe una alumna con ese nombre.');return;}
-  d.alumnas.push({id:'a'+Date.now()+Math.floor(Math.random()*999999),nombre,profesora:prof,contacto,dni});
+function agregarAlumna() {
+  var nombre = document.getElementById('cfg-nombre').value.trim();
+  var prof = document.getElementById('cfg-prof').value;
+  var dni = document.getElementById('cfg-dni').value.trim();
+  var contacto = document.getElementById('cfg-contacto').value.trim();
+  if (!nombre || !prof) { alert('Nombre y profesora son obligatorios.'); return; }
+  var d = loadData();
+  if (d.alumnas.find(function(a){ return a.nombre.toLowerCase()===nombre.toLowerCase(); })) { alert('Ya existe esa alumna.'); return; }
+  d.alumnas.push({id:'a'+Date.now(),nombre:nombre,profesora:prof,contacto:contacto,dni:dni});
   saveData(d);
-  ['cfg-nombre','cfg-contacto','cfg-dni'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('cfg-prof').value='';
+  ['cfg-nombre','cfg-contacto','cfg-dni'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('cfg-prof').value = '';
   alert('✅ Alumna agregada.');
 }
-function eliminarAlumna(id){
-  if(!confirm('¿Eliminar esta alumna y todos sus pagos?\nEsta acción no se puede deshacer.'))return;
-  const d=getData();
-  d.alumnas=d.alumnas.filter(a=>a.id!==id);
-  d.pagos=d.pagos.filter(p=>p.alumnaId!==id);
-  saveData(d);closeModalBtn();renderAlumnas();
+function eliminarAlumna(id) {
+  if (!confirm('¿Eliminar esta alumna y todos sus pagos?')) return;
+  var d = loadData();
+  d.alumnas = d.alumnas.filter(function(a){ return a.id!==id; });
+  d.pagos = d.pagos.filter(function(p){ return p.alumnaId!==id; });
+  saveData(d); closeModalBtn(); renderAlumnas();
 }
 
-// ── Firebase config hardcodeada ───────────────────────────────────────────────
-const FB={
-  apiKey:"AIzaSyDoPJnyUVLoj7lGRQI7vLQHbmikd1XWDeQ",
-  projectId:"gen-lang-client-02640914-425b1",
-  appId:"1:142484536157:web:7d7a1f538d4f3b3e0506b4"
-};
-const FB_URL=`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/av2026/datos`;
-
-function guardarConfigFirebase(){alert('Firebase ya está configurado automáticamente.');}
-function renderConfigFirebase(){
-  const el=document.getElementById('firebase-status');
-  if(el){el.className='sync-status ok';el.textContent='✅ Firebase conectado: '+FB.projectId;}
-  const btn=document.getElementById('btn-sync-firebase');
-  if(btn)btn.style.display='block';
-  document.getElementById('fb-apikey').value=FB.apiKey;
-  document.getElementById('fb-projectid').value=FB.projectId;
-  document.getElementById('fb-appid').value=FB.appId;
-  const d=getData();
-  const log=d.syncLog||[];
-  const el2=document.getElementById('sync-last');
-  if(el2)el2.textContent=log.length?`Última sync: ${new Date(log[log.length-1].ts).toLocaleString('es-AR')}`:'Nunca sincronizado.';
-}
-async function sincronizarFirebase(){
-  const btn=document.getElementById('btn-sync-firebase');
-  const el=document.getElementById('firebase-status');
-  if(btn){btn.disabled=true;btn.textContent='⏳ Sincronizando...';}
-  const d=getData();
-  const body={fields:{
+async function sincronizarFirebase() {
+  var btn = document.getElementById('sync-btn');
+  var el = document.getElementById('firebase-status');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳...'; }
+  var d = loadData();
+  var body = {fields:{
     alumnas:{stringValue:JSON.stringify(d.alumnas)},
     pagos:{stringValue:JSON.stringify(d.pagos)},
     ts:{stringValue:new Date().toISOString()}
   }};
-  try{
-    const r=await fetch(FB_URL+'?key='+FB.apiKey,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!r.ok)throw new Error(await r.text());
-    d.syncLog=d.syncLog||[];
-    d.syncLog.push({ts:new Date().toISOString(),pagos:d.pagos.length,alumnas:d.alumnas.length});
+  try {
+    var r = await fetch(FB_URL+'?key='+FB_API, {method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    if (!r.ok) throw new Error(await r.text());
+    d.syncLog = d.syncLog || [];
+    d.syncLog.push({ts:new Date().toISOString(), pagos:d.pagos.length, alumnas:d.alumnas.length});
     saveData(d);
-    if(el){el.className='sync-status ok';el.textContent=`✅ Sincronizado: ${d.alumnas.length} alumnas · ${d.pagos.length} pagos`;}
-    alert('✅ Datos guardados en Firebase correctamente.');
-    renderConfigFirebase();
-  }catch(e){
-    if(el){el.className='sync-status error';el.textContent='❌ Error al sincronizar. Revisá la conexión.';}
+    if (el) { el.className='sync-status ok'; el.textContent='✅ Sincronizado: '+d.alumnas.length+' alumnas · '+d.pagos.length+' pagos'; }
+    alert('✅ Datos guardados en Firebase.');
+    renderSyncStatus();
+  } catch(e) {
+    if (el) { el.className='sync-status error'; el.textContent='❌ Error al sincronizar.'; }
     alert('❌ Error:\n'+e.message);
   }
-  if(btn){btn.disabled=false;btn.textContent='☁️ Sincronizar ahora';}
+  if (btn) { btn.disabled = false; btn.textContent = '☁️ Sync'; }
 }
-async function cargarDesdeFirebase(){
-  try{
-    const r=await fetch(FB_URL+'?key='+FB.apiKey);
-    if(!r.ok)return;
-    const data=await r.json();
-    if(!data.fields)return;
-    const alumnas=JSON.parse(data.fields.alumnas.stringValue);
-    const pagos=JSON.parse(data.fields.pagos.stringValue);
-    const d=getData();
-    // Solo reemplaza si Firebase tiene más datos o es primera vez
-    if(alumnas.length>=d.alumnas.length){
-      d.alumnas=alumnas;d.pagos=pagos;d.iniciado=true;
+
+async function cargarDesdeFirebase() {
+  try {
+    var r = await fetch(FB_URL+'?key='+FB_API);
+    if (!r.ok) return;
+    var data = await r.json();
+    if (!data.fields) return;
+    var alumnas = JSON.parse(data.fields.alumnas.stringValue);
+    var pagos = JSON.parse(data.fields.pagos.stringValue);
+    var d = loadData();
+    if (alumnas.length >= d.alumnas.length) {
+      d.alumnas = alumnas; d.pagos = pagos; d.iniciado = true;
       saveData(d);
-      renderDashboard();renderAlumnas();
-      console.log('✅ Datos cargados desde Firebase');
+      renderDashboard(); renderAlumnas();
     }
-  }catch(e){console.log('Sin conexión o sin datos en Firebase aún.');}
-}
-function mostrarFirebaseInfo(){
-  showTab('config');
-  setTimeout(()=>document.getElementById('firebase-status')?.scrollIntoView({behavior:'smooth'}),100);
+  } catch(e) { console.log('Sin conexión a Firebase.'); }
 }
 
-// ── Backup ────────────────────────────────────────────────────────────────────
-function exportarDatos(){
-  const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download=`backup-aguas-verdes-${hoy()}.json`;a.click();
+function renderSyncStatus() {
+  var el = document.getElementById('sync-last');
+  if (!el) return;
+  var log = loadData().syncLog || [];
+  el.textContent = log.length ? 'Última sync: ' + new Date(log[log.length-1].ts).toLocaleString('es-AR') : 'Nunca sincronizado.';
 }
-function importarDatos(){document.getElementById('import-file').click();}
-function leerImport(e){
-  const file=e.target.files[0];if(!file)return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    try{
-      const d=JSON.parse(ev.target.result);
-      if(!d.alumnas||!d.pagos)throw 0;
-      if(!confirm(`¿Importar backup?\nAlumnas: ${d.alumnas.length} · Pagos: ${d.pagos.length}\nREEMPLAZA los datos actuales.`))return;
-      d.iniciado=true;
-      saveData(d);alert('✅ Datos importados.');renderDashboard();renderAlumnas();
-    }catch{alert('❌ Archivo inválido.');}
+
+function exportarDatos() {
+  var blob = new Blob([JSON.stringify(loadData(),null,2)], {type:'application/json'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'backup-aguas-verdes-'+hoy()+'.json'; a.click();
+}
+function importarDatos() { document.getElementById('import-file').click(); }
+function leerImport(e) {
+  var file = e.target.files[0]; if (!file) return;
+  var r = new FileReader();
+  r.onload = function(ev) {
+    try {
+      var d = JSON.parse(ev.target.result);
+      if (!d.alumnas || !d.pagos) throw 0;
+      if (!confirm('¿Importar backup?\nAlumnas: '+d.alumnas.length+' · Pagos: '+d.pagos.length+'\nREEMPLAZA los datos actuales.')) return;
+      d.iniciado = true; saveData(d);
+      alert('✅ Datos importados.'); renderDashboard(); renderAlumnas();
+    } catch(err) { alert('❌ Archivo inválido.'); }
   };
-  r.readAsText(file);e.target.value='';
+  r.readAsText(file); e.target.value = '';
 }
-function resetearDatos(){
-  if(!confirm('⚠️ ¿BORRAR TODOS los datos?\nEsta acción es IRREVERSIBLE.'))return;
-  if(!confirm('Segunda confirmación:\n¿Estás completamente seguro?'))return;
+function resetearDatos() {
+  if (!confirm('⚠️ ¿BORRAR TODOS los datos? Irreversible.')) return;
+  if (!confirm('Segunda confirmación: ¿Seguro?')) return;
   localStorage.removeItem('av2026');
-  alert('Datos eliminados.');renderDashboard();renderAlumnas();
+  alert('Datos eliminados.'); renderDashboard(); renderAlumnas();
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
 cargarDesdeFirebase();
 renderDashboard();
 </script>
