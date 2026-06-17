@@ -321,7 +321,7 @@
       </select>
     </div>
 
-    <label class="field-label">👪 Padre / Madre que entregó el dinero *</label>
+    <label class="field-label">👪 Padre / Madre que entregó el dinero <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
     <input type="text" id="pago-familia" placeholder="Ej: María González (mamá de Sofía)">
 
     <label class="field-label">📝 Observaciones (opcional)</label>
@@ -627,7 +627,6 @@ function guardarPago(){
   const familia=document.getElementById('pago-familia').value.trim();
   const obs=document.getElementById('pago-obs').value.trim();
   if(!alumnaId||!cuotaId||!monto){alert('Seleccioná alumna y cuota.');return;}
-  if(!familia){alert('Ingresá el nombre del padre/madre que entregó el dinero.');return;}
   if(flujo==='profe'&&!profe){alert('Seleccioná la profesora que entregó el dinero.');return;}
   const d=getData();
   d.pagos.push({id:'p'+Date.now(),alumnaId,cuotaId,monto,flujo,
