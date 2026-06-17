@@ -226,16 +226,9 @@
   </div>
   <div class="card">
     <div class="card-title">☁️ Sincronización Firebase</div>
-    <div id="firebase-status" class="sync-status pending">⏳ Firebase no configurado aún</div>
-    <p class="muted" style="margin-top:10px">Para activar la sincronización en la nube, pegá acá tu configuración de Firebase:</p>
-    <label class="field-label">API Key</label>
-    <input type="text" id="fb-apikey" placeholder="AIzaSy...">
-    <label class="field-label">Project ID</label>
-    <input type="text" id="fb-projectid" placeholder="viaje-aguas-verdes">
-    <label class="field-label">App ID</label>
-    <input type="text" id="fb-appid" placeholder="1:123456:web:abc...">
-    <button class="btn btn-blue" onclick="guardarConfigFirebase()">💾 Guardar configuración Firebase</button>
-    <button class="btn btn-green" id="btn-sync-firebase" onclick="sincronizarFirebase()" style="display:none">☁️ Sincronizar ahora</button>
+    <div id="firebase-status" class="sync-status ok">✅ Firebase conectado</div>
+    <p class="muted" style="margin-top:10px;margin-bottom:4px">Los datos se guardan en la nube. Podés abrir la app desde cualquier dispositivo y los datos van a estar disponibles.</p>
+    <button class="btn btn-green" id="btn-sync-firebase" onclick="sincronizarFirebase()">☁️ Sincronizar ahora</button>
     <p class="muted" style="margin-top:8px" id="sync-last"></p>
   </div>
   <div class="card">
