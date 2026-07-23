@@ -756,26 +756,58 @@ function eliminarAlumna(id) {
   saveData(d); closeModalBtn(); renderAlumnas();
 }
 
+function combinarListas(locales, remotos, campo) {
+  // Une dos listas por ID sin duplicar — remoto + local, local gana si hay conflicto
+  var mapa = {};
+  remotos.forEach(function(item){ mapa[item.id] = item; });
+  locales.forEach(function(item){ mapa[item.id] = item; }); // local pisa remoto
+  return Object.keys(mapa).map(function(k){ return mapa[k]; });
+}
+
 async function sincronizarFirebase() {
   var btn = document.getElementById('sync-btn');
   var el = document.getElementById('firebase-status');
   if (btn) { btn.disabled=true; btn.textContent='⏳...'; }
-  var d = loadData();
-  var body = {fields:{
-    alumnas:{stringValue:JSON.stringify(d.alumnas)},
-    pagos:{stringValue:JSON.stringify(d.pagos)},
-    gastos:{stringValue:JSON.stringify(d.gastos||[])},
-    ts:{stringValue:new Date().toISOString()}
-  }};
+
   try {
-    var r = await fetch(FB_URL+'?key='+FB_API,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if (!r.ok) throw new Error(await r.text());
-    d.syncLog = d.syncLog||[];
-    d.syncLog.push({ts:new Date().toISOString(),pagos:d.pagos.length,alumnas:d.alumnas.length});
+    // 1. Bajar datos de Firebase
+    var r = await fetch(FB_URL+'?key='+FB_API);
+    var fbAlumnas = [], fbPagos = [], fbGastos = [];
+    if (r.ok) {
+      var data = await r.json();
+      if (data.fields) {
+        fbAlumnas = data.fields.alumnas ? JSON.parse(data.fields.alumnas.stringValue) : [];
+        fbPagos   = data.fields.pagos   ? JSON.parse(data.fields.pagos.stringValue)   : [];
+        fbGastos  = data.fields.gastos  ? JSON.parse(data.fields.gastos.stringValue)  : [];
+      }
+    }
+
+    // 2. Combinar con datos locales (sin perder nada)
+    var d = loadData();
+    d.alumnas = combinarListas(d.alumnas, fbAlumnas);
+    d.pagos   = combinarListas(d.pagos,   fbPagos);
+    d.gastos  = combinarListas(d.gastos||[], fbGastos);
+    d.iniciado = true;
     saveData(d);
-    if (el) { el.className='sync-status ok'; el.textContent='✅ Sincronizado: '+d.alumnas.length+' alumnas · '+d.pagos.length+' pagos · '+(d.gastos||[]).length+' gastos'; }
-    alert('✅ Datos guardados en Firebase.');
+
+    // 3. Subir el resultado combinado a Firebase
+    var body = {fields:{
+      alumnas:{stringValue:JSON.stringify(d.alumnas)},
+      pagos:  {stringValue:JSON.stringify(d.pagos)},
+      gastos: {stringValue:JSON.stringify(d.gastos)},
+      ts:     {stringValue:new Date().toISOString()}
+    }};
+    var r2 = await fetch(FB_URL+'?key='+FB_API,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if (!r2.ok) throw new Error(await r2.text());
+
+    d.syncLog = d.syncLog||[];
+    d.syncLog.push({ts:new Date().toISOString(),pagos:d.pagos.length,alumnas:d.alumnas.length,gastos:d.gastos.length});
+    saveData(d);
+
+    if (el) { el.className='sync-status ok'; el.textContent='✅ Sincronizado: '+d.alumnas.length+' alumnas · '+d.pagos.length+' pagos · '+d.gastos.length+' gastos'; }
+    renderDashboard(); renderAlumnas();
     renderSyncStatus();
+    alert('✅ Sincronización completa. Todos los datos combinados.');
   } catch(e) {
     if (el) { el.className='sync-status error'; el.textContent='❌ Error al sincronizar.'; }
     alert('❌ Error:\n'+e.message);
@@ -789,14 +821,17 @@ async function cargarDesdeFirebase() {
     if (!r.ok) return;
     var data = await r.json();
     if (!data.fields) return;
-    var alumnas = JSON.parse(data.fields.alumnas.stringValue);
-    var pagos = JSON.parse(data.fields.pagos.stringValue);
-    var gastos = data.fields.gastos ? JSON.parse(data.fields.gastos.stringValue) : [];
+    var fbAlumnas = data.fields.alumnas ? JSON.parse(data.fields.alumnas.stringValue) : [];
+    var fbPagos   = data.fields.pagos   ? JSON.parse(data.fields.pagos.stringValue)   : [];
+    var fbGastos  = data.fields.gastos  ? JSON.parse(data.fields.gastos.stringValue)  : [];
     var d = loadData();
-    if (alumnas.length >= d.alumnas.length) {
-      d.alumnas=alumnas; d.pagos=pagos; d.gastos=gastos; d.iniciado=true;
-      saveData(d); renderDashboard(); renderAlumnas();
-    }
+    // Combinar sin perder datos locales
+    d.alumnas  = combinarListas(d.alumnas, fbAlumnas);
+    d.pagos    = combinarListas(d.pagos,   fbPagos);
+    d.gastos   = combinarListas(d.gastos||[], fbGastos);
+    d.iniciado = true;
+    saveData(d);
+    renderDashboard(); renderAlumnas();
   } catch(e) { console.log('Sin conexi\u00f3n a Firebase.'); }
 }
 
