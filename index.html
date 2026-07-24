@@ -320,7 +320,34 @@ select option{background:#fff;}
   </div>
 </div>
 
-<!-- MODAL EDITAR GASTO -->
+<!-- MODAL EDITAR PAGO -->
+<div class="modal-overlay" id="modal-pago-overlay" onclick="closePagoModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">✏️ Editar pago</span>
+      <button class="close-btn" onclick="closePagoModalBtn()">✕</button>
+    </div>
+    <div style="padding:0 0 16px">
+      <label class="field-label">Concepto</label>
+      <input type="text" id="ep-concepto" readonly style="background:#f7fafc;color:var(--muted)">
+      <label class="field-label">Monto recibido ($) *</label>
+      <input type="number" id="ep-monto">
+      <label class="field-label">Fecha *</label>
+      <input type="date" id="ep-fecha">
+      <label class="field-label">Entregado por (profesora o directo)</label>
+      <input type="text" id="ep-profe">
+      <label class="field-label">Padre / Madre <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+      <input type="text" id="ep-familia">
+      <label class="field-label">Observaciones <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+      <textarea id="ep-obs"></textarea>
+      <input type="hidden" id="ep-id">
+      <input type="hidden" id="ep-alumna-id">
+      <button class="btn btn-blue" onclick="guardarEdicionPago()">💾 Guardar cambios</button>
+      <button class="btn btn-outline" onclick="closePagoModalBtn()">Cancelar</button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="modal-gasto-overlay" onclick="closeGastoModal(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -546,7 +573,7 @@ function openModal(id) {
       var montoSug = c.monto;
       var diferencia = pago.monto !== montoSug ? ' <span style="font-size:11px;color:var(--orange);font-weight:700">(sugerido: '+fmtP(montoSug)+')</span>' : '';
       var ft = pago.flujo==='directo' ? 'Directo a Jos\u00e9 Mar\u00eda' : 'V\u00eda '+pago.profe;
-      html += '<div class="pago-item"><div class="pi-row"><span class="pi-nombre">'+c.nombre+'</span><span class="pi-monto">'+fmtP(pago.monto)+diferencia+'</span></div><div class="pi-row"><span class="pi-detail">📅 '+fmtF(pago.fecha)+'</span>'+(pago.familia?'<span class="pi-detail">👪 '+pago.familia+'</span>':'')+'</div><div class="pi-detail">📦 '+ft+'</div><div class="pi-firmas">✅ Profesora confirm\u00f3 · ✅ Jos\u00e9 Mar\u00eda confirm\u00f3</div>'+(pago.obs?'<div class="pi-detail" style="margin-top:4px">📝 '+pago.obs+'</div>':'')+'</div>';
+      html += '<div class="pago-item"><div class="pi-row"><span class="pi-nombre">'+c.nombre+'</span><span class="pi-monto">'+fmtP(pago.monto)+diferencia+'</span></div><div class="pi-row"><span class="pi-detail">📅 '+fmtF(pago.fecha)+'</span>'+(pago.familia?'<span class="pi-detail">👪 '+pago.familia+'</span>':'')+'</div><div class="pi-detail">📦 '+ft+'</div><div class="pi-firmas">✅ Profesora confirm\u00f3 · ✅ Jos\u00e9 Mar\u00eda confirm\u00f3</div>'+(pago.obs?'<div class="pi-detail" style="margin-top:4px">📝 '+pago.obs+'</div>':'')+'<button class="btn btn-outline" style="margin-top:8px;padding:8px;font-size:13px" onclick="abrirEditarPago(\''+pago.id+'\',\''+id+'\')">✏️ Editar este pago</button></div>';
     } else {
       var dias = diasHasta(c.vence);
       var vs = dias<0 ? '⚠️ Vencida hace '+Math.abs(dias)+' d\u00edas' : dias===0 ? '⚠️ Vence HOY' : 'Vence '+fmtF(c.vence);
@@ -731,6 +758,45 @@ function guardarGasto() {
   saveData(d); closeGastoModalBtn(); renderGastos();
   alert('✅ Gasto actualizado.');
 }
+function abrirEditarPago(pagoId, alumnaId) {
+  var d = loadData();
+  var pago = d.pagos.find(function(p){ return p.id===pagoId; });
+  if (!pago) { alert('Pago no encontrado.'); return; }
+  var cuota = CUOTAS_DEF.find(function(c){ return c.id===pago.cuotaId; });
+  document.getElementById('ep-id').value = pagoId;
+  document.getElementById('ep-alumna-id').value = alumnaId;
+  document.getElementById('ep-concepto').value = cuota ? cuota.nombre : pago.cuotaId;
+  document.getElementById('ep-monto').value = pago.monto;
+  document.getElementById('ep-fecha').value = pago.fecha;
+  document.getElementById('ep-profe').value = pago.profe||'';
+  document.getElementById('ep-familia').value = pago.familia||'';
+  document.getElementById('ep-obs').value = pago.obs||'';
+  document.getElementById('modal-pago-overlay').classList.add('open');
+}
+function guardarEdicionPago() {
+  var pagoId = document.getElementById('ep-id').value;
+  var alumnaId = document.getElementById('ep-alumna-id').value;
+  var monto = parseInt(document.getElementById('ep-monto').value);
+  var fecha = document.getElementById('ep-fecha').value;
+  var profe = document.getElementById('ep-profe').value.trim();
+  var familia = document.getElementById('ep-familia').value.trim();
+  var obs = document.getElementById('ep-obs').value.trim();
+  if (!monto||isNaN(monto)||!fecha) { alert('Monto y fecha son obligatorios.'); return; }
+  var d = loadData();
+  var idx = d.pagos.findIndex(function(p){ return p.id===pagoId; });
+  if (idx===-1) { alert('Pago no encontrado.'); return; }
+  d.pagos[idx].monto = monto;
+  d.pagos[idx].fecha = fecha;
+  d.pagos[idx].profe = profe;
+  d.pagos[idx].familia = familia;
+  d.pagos[idx].obs = obs;
+  saveData(d);
+  closePagoModalBtn();
+  openModal(alumnaId);
+  alert('✅ Pago actualizado correctamente.');
+}
+function closePagoModal(e) { if (e.target===document.getElementById('modal-pago-overlay')) closePagoModalBtn(); }
+function closePagoModalBtn() { document.getElementById('modal-pago-overlay').classList.remove('open'); }
 function closeGastoModal(e) { if (e.target===document.getElementById('modal-gasto-overlay')) closeGastoModalBtn(); }
 function closeGastoModalBtn() { document.getElementById('modal-gasto-overlay').classList.remove('open'); }
 
