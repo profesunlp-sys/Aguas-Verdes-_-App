@@ -409,6 +409,9 @@ function showTab(t) {
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function renderDashboard() {
+  if (!document.getElementById('stats-grid')) return;
+  if (!document.getElementById('dash-cuotas')) return;
+  if (!document.getElementById('dash-profes')) return;
   var total = DB.alumnas.length * COSTO_TOTAL;
   var rec = DB.pagos.reduce(function(s,p){ return s + p.monto; }, 0);
   var gastoTotal = DB.gastos.reduce(function(s,g){ return s + g.monto; }, 0);
@@ -455,8 +458,7 @@ function renderDashboard() {
   }).join('');
   document.getElementById('dash-cuotas').innerHTML = chtml || '<p class="muted">Sin alumnas.</p>';
 
-  var phtml = PROFES.map(function(pr){
-    var al = DB.alumnas.filter(function(a){ return a.profesora === pr; });
+  var phtml = PROFES.map(function(pr){    var al = DB.alumnas.filter(function(a){ return a.profesora === pr; });
     if (!al.length) return '';
     var rec2 = al.reduce(function(s,a){ return s + totalPagado(a._docId); }, 0);
     var p2 = Math.round(rec2 / (al.length * COSTO_TOTAL) * 100);
