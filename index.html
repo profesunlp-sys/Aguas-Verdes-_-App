@@ -104,10 +104,10 @@ textarea{resize:none;height:72px;}
 .balance-card.neg{background:var(--red-bg);border-color:#fca5a5;}
 .balance-val{font-size:16px;font-weight:900;margin-bottom:2px;}
 .balance-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;}
-.drag-handle{cursor:grab;color:var(--muted);font-size:18px;margin-right:8px;user-select:none;display:inline-block;vertical-align:middle;}
-.drag-handle:active{cursor:grabbing;}
-.dashboard-module{transition:opacity .2s;margin-bottom:14px;}
-.dashboard-module.dragging{opacity:.4;}
+/* DRAG AND DROP */
+.drag-handle{cursor:grab;color:var(--muted);font-size:20px;padding:0 8px 0 0;user-select:none;touch-action:none;}
+.dashboard-module{margin-bottom:14px;transition:box-shadow .2s;}
+.dashboard-module.dragging{opacity:.5;box-shadow:0 8px 24px rgba(0,0,0,.2);}
 .dashboard-module.drag-over{outline:3px dashed var(--accent);}
 .module-titlebar{display:flex;align-items:center;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;}
 </style>
