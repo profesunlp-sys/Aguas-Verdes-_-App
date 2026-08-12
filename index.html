@@ -409,9 +409,6 @@ function showTab(t) {
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function renderDashboard() {
-  if (!document.getElementById('stats-grid')) return;
-  if (!document.getElementById('dash-cuotas')) return;
-  if (!document.getElementById('dash-profes')) return;
   var total = DB.alumnas.length * COSTO_TOTAL;
   var rec = DB.pagos.reduce(function(s,p){ return s + p.monto; }, 0);
   var gastoTotal = DB.gastos.reduce(function(s,g){ return s + g.monto; }, 0);
