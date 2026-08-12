@@ -208,6 +208,13 @@ select option{background:#fff;}
     <div class="info-row"><span class="lbl">Cuotas</span><span class="val">4 × $50.000 (ago–nov)</span></div>
   </div>
   <div class="card">
+    <div class="card-title">📤 Exportar / Importar</div>
+    <p class="muted" style="margin-bottom:12px">Exporta 2 archivos: uno completo y otro compatible con CajasApp. También podés importar gastos desde CajasApp.</p>
+    <button class="btn btn-blue" onclick="exportarJSON()">📥 Exportar (2 archivos JSON)</button>
+    <button class="btn btn-outline" onclick="document.getElementById('import-cajasapp').click()" style="margin-top:8px">📤 Importar gastos desde CajasApp</button>
+    <input type="file" id="import-cajasapp" accept=".json" style="display:none" onchange="(function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){importarDesdeCajasApp(ev.target.result);};r.readAsText(f);e.target.value='';})(event)">
+  </div>
+  <div class="card">
     <div class="card-title">☁️ Estado Firebase</div>
     <div id="firebase-status" class="note-box">Verificando conexión...</div>
     <p class="muted" style="margin-top:8px">Todos los datos se guardan y leen directo desde Firebase. No hay sincronización manual — lo que ves es siempre lo más actualizado.</p>
@@ -711,6 +718,134 @@ async function guardarGasto() {
     closeGastoModalBtn(); renderGastos();
     alert('✅ Gasto actualizado.');
   } catch(e) { alert('❌ Error: ' + e.message); }
+}
+function exportarJSON() {
+  var totalRecaudado = DB.pagos.reduce(function(s,p){ return s+p.monto; },0);
+  var totalGastos = DB.gastos.reduce(function(s,g){ return s+g.monto; },0);
+
+  // ── Formato propio (completo) ──────────────────────────────────────────────
+  var exportPropio = {
+    metadata: {
+      app: "Viaje Aguas Verdes 2026",
+      exportado: new Date().toLocaleString('es-AR'),
+      totalAlumnas: DB.alumnas.length,
+      totalPagos: DB.pagos.length,
+      totalGastos: DB.gastos.length,
+      totalRecaudado: totalRecaudado,
+      totalGastado: totalGastos,
+      balance: totalRecaudado - totalGastos
+    },
+    alumnas: DB.alumnas.map(function(a){
+      var tp = totalPagado(a._docId);
+      return {id:a._docId, nombre:a.nombre, profesora:a.profesora, dni:a.dni||'', contacto:a.contacto||'', totalPagado:tp, saldoPendiente:Math.max(0,COSTO_TOTAL-tp), estado:estadoAlumna(a._docId)};
+    }),
+    pagos: DB.pagos.map(function(p){
+      var alumna = DB.alumnas.find(function(a){ return a._docId===p.alumnaId; });
+      var cuota = CUOTAS_DEF.find(function(c){ return c.id===p.cuotaId; });
+      return {id:p._docId, alumna:alumna?alumna.nombre:'?', profesora:alumna?alumna.profesora:'?', cuota:cuota?cuota.nombre:p.cuotaId, monto:p.monto, fecha:p.fecha, entregadoPor:p.profe||'', familia:p.familia||'', observaciones:p.obs||'', confirmado:true};
+    }),
+    gastos: DB.gastos.map(function(g){
+      return {id:g._docId, concepto:g.concepto, categoria:g.categoria, monto:g.monto, fecha:g.fecha, observaciones:g.obs||''};
+    })
+  };
+
+  // ── Formato CajasApp compatible ────────────────────────────────────────────
+  var transactions = [];
+  var tIdx = 1;
+
+  // Pagos → ingresos en CajasApp
+  DB.pagos.forEach(function(p){
+    var alumna = DB.alumnas.find(function(a){ return a._docId===p.alumnaId; });
+    var cuota = CUOTAS_DEF.find(function(c){ return c.id===p.cuotaId; });
+    transactions.push({
+      id: 'tav' + tIdx++,
+      type: 'ingreso',
+      category: 'Cuotas viaje',
+      date: p.fecha,
+      amount: p.monto,
+      boxId: 'av-efectivo',
+      desc: (cuota?cuota.nombre:'Pago') + ' — ' + (alumna?alumna.nombre:'?') + (p.profe?' (vía '+p.profe+')':'')
+    });
+  });
+
+  // Gastos → gastos en CajasApp
+  DB.gastos.forEach(function(g){
+    transactions.push({
+      id: 'gav' + tIdx++,
+      type: 'gasto',
+      category: g.categoria.replace(/^[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\uFE0F\s]+/u,'').trim(),
+      date: g.fecha,
+      amount: g.monto,
+      boxId: 'av-efectivo',
+      desc: g.concepto + (g.obs?' — '+g.obs:'')
+    });
+  });
+
+  var exportCajasApp = {
+    projects: [
+      {
+        id: 'p-aguas-verdes-2026',
+        name: 'Viaje Aguas Verdes 2026',
+        emoji: '🏖️',
+        date: '11 al 13 de Diciembre 2026',
+        boxes: [
+          {id:'av-efectivo', name:'Efectivo / Pagos', color:'#16a34a', type:'efectivo', initial:0}
+        ],
+        transactions: transactions,
+        reminders: []
+      }
+    ],
+    settings: {
+      categories: ['Cuotas viaje','Alojamiento','Transporte','Inscripciones','Comidas','Actividades','Administrativo','Salud / Emergencias','Otros']
+    },
+    current: 'p-aguas-verdes-2026',
+    _source: 'Aguas Verdes App',
+    _exportado: new Date().toISOString()
+  };
+
+  // Descargar formato propio
+  var blob1 = new Blob([JSON.stringify(exportPropio, null, 2)], {type:'application/json'});
+  var a1 = document.createElement('a'); a1.href = URL.createObjectURL(blob1);
+  a1.download = 'aguas-verdes-completo-' + hoy() + '.json'; a1.click();
+
+  // Descargar formato CajasApp (con pequeño delay para no bloquear)
+  setTimeout(function(){
+    var blob2 = new Blob([JSON.stringify(exportCajasApp, null, 2)], {type:'application/json'});
+    var a2 = document.createElement('a'); a2.href = URL.createObjectURL(blob2);
+    a2.download = 'aguas-verdes-cajasapp-' + hoy() + '.json'; a2.click();
+    alert('✅ Se descargaron 2 archivos:\n• aguas-verdes-completo: formato propio\n• aguas-verdes-cajasapp: para importar en CajasApp');
+  }, 800);
+}
+
+// ── IMPORTAR DESDE CAJASAPP ───────────────────────────────────────────────────
+async function importarDesdeCajasApp(jsonStr) {
+  try {
+    var data = JSON.parse(jsonStr);
+    if (!data.projects) { alert('❌ Formato no reconocido.'); return; }
+
+    // Buscar proyecto de Aguas Verdes en el JSON de CajasApp
+    var proyecto = data.projects.find(function(p){
+      return p.name && p.name.toLowerCase().indexOf('aguas') !== -1;
+    });
+    if (!proyecto) { alert('❌ No encontré un proyecto de Aguas Verdes en este archivo.'); return; }
+
+    var importados = 0;
+    for (var i = 0; i < proyecto.transactions.length; i++) {
+      var t = proyecto.transactions[i];
+      // Solo importar si no existe ya en DB.gastos
+      var yaExiste = DB.gastos.find(function(g){ return g._docId === t.id; });
+      if (!yaExiste && t.type === 'gasto') {
+        var gasto = {concepto: t.desc||'Sin descripción', categoria: t.category||'📦 Otros', monto: t.amount, fecha: t.date, obs: ''};
+        var id = t.id || ('g'+Date.now()+importados);
+        await fbSet('gastos', id, gasto);
+        gasto._docId = id;
+        DB.gastos.push(gasto);
+        importados++;
+      }
+    }
+    renderGastos();
+    alert('✅ Importados ' + importados + ' gastos desde CajasApp.');
+  } catch(e) { alert('❌ Error al importar: ' + e.message); }
 }
 function closeGastoModalBtn() { document.getElementById('modal-gasto-overlay').classList.remove('open'); }
 
