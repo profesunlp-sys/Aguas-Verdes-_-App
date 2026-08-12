@@ -443,7 +443,29 @@ function renderDashboard() {
     var pend = DB.alumnas.filter(function(a){ return !cuotasPagadas(a._docId).has(c.id); }).length;
     vhtml += '<div class="info-row"><span class="lbl"><b>' + c.nombre + '</b> · ' + fmtF(c.vence) + '</span><span style="font-weight:800;color:var(--orange)">' + pend + ' pend.</span></div>';
   });
-  document.getElementById('dash-vencimientos-body').innerHTML = vhtml;
+  var vEl = document.getElementById('dash-vencimientos-body') || document.getElementById('dash-vencimientos');
+  if (vEl) vEl.innerHTML = vhtml;
+
+  var chtml = CUOTAS_DEF.map(function(c){
+    var pg = DB.alumnas.filter(function(a){ return cuotasPagadas(a._docId).has(c.id); }).length;
+    var tot = DB.alumnas.length;
+    var pct2 = tot > 0 ? Math.round(pg / tot * 100) : 0;
+    var dias = diasHasta(c.vence);
+    var vs = dias < 0 ? '<span class="c-red" style="font-size:12px;font-weight:700">⚠️ Vencida</span>' : dias === 0 ? '<span class="c-orange" style="font-size:12px">Hoy</span>' : '<span class="muted">' + fmtF(c.vence) + '</span>';
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>' + c.nombre + '</span>' + vs + '</div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span class="muted">' + pg + '/' + tot + ' pagas</span><span style="font-weight:800;color:var(--accent)">' + fmtP(c.monto) + '</span></div><div class="progress-wrap"><div class="progress-fill" style="width:' + pct2 + '%"></div></div></div>';
+  }).join('');
+  var cEl = document.getElementById('dash-cuotas');
+  if (cEl) cEl.innerHTML = chtml || '<p class="muted">Sin alumnas.</p>';
+
+  var phtml = PROFES.map(function(pr){
+    var al = DB.alumnas.filter(function(a){ return a.profesora === pr; });
+    if (!al.length) return '';
+    var rec2 = al.reduce(function(s,a){ return s + totalPagado(a._docId); }, 0);
+    var p2 = Math.round(rec2 / (al.length * COSTO_TOTAL) * 100);
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:4px"><span>👩‍🏫 ' + pr + '</span><span class="muted" style="font-size:13px">' + al.length + ' alumnas</span></div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span class="muted">Recaudado</span><span style="font-weight:800;color:var(--green)">' + fmtP(rec2) + '</span></div><div class="progress-wrap"><div class="progress-fill" style="width:' + p2 + '%"></div></div></div>';
+  }).join('');
+  var pEl = document.getElementById('dash-profes');
+  if (pEl) pEl.innerHTML = phtml || '<p class="muted">Sin alumnas.</p>';
 
   var chtml = CUOTAS_DEF.map(function(c){
     var pg = DB.alumnas.filter(function(a){ return cuotasPagadas(a._docId).has(c.id); }).length;
