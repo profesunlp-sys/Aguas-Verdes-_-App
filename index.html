@@ -773,13 +773,12 @@ function exportarJSON() {
     transactions.push({
       id: 'gav' + tIdx++,
       type: 'gasto',
-      category: g.categoria.replace(/^[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\uFE0F\s]+/u,'').trim(),
+      category: g.categoria.replace(/[^\w\s\/áéíóúüñÁÉÍÓÚÜÑ]/g,'').trim()||'Otros',
       date: g.fecha,
       amount: g.monto,
       boxId: 'av-efectivo',
-      desc: g.concepto + (g.obs?' — '+g.obs:'')
-    });
-  });
+      desc: g.concepto + (g.obs?' — '+g.obs:''),
+      boxId: 'av-gastos'
 
   var exportCajasApp = {
     projects: [
@@ -789,7 +788,8 @@ function exportarJSON() {
         emoji: '🏖️',
         date: '11 al 13 de Diciembre 2026',
         boxes: [
-          {id:'av-efectivo', name:'Efectivo / Pagos', color:'#16a34a', type:'efectivo', initial:0}
+          {id:'av-efectivo', name:'Pagos recibidos (ingresos)', color:'#16a34a', type:'efectivo', initial:0},
+          {id:'av-gastos',   name:'Gastos del viaje', color:'#dc2626', type:'efectivo', initial:0}
         ],
         transactions: transactions,
         reminders: []
